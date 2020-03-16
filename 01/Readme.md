@@ -16,6 +16,7 @@ Strona, po uruchomieniu dockera, powinna  być dostępna na komputerze proawdzą
 
 # Jak uruchomić
 Należy w katalogu projektu uruchomić terminal i wpisać następujące komendy:
-> docker-compose build
-> docker-compose up
+
+    > docker-compose build  
+    > docker-compose up  
 Strona będzie dostępna pod adresm http://localhost:8080
