@@ -1,0 +1,177 @@
+<!doctype html>
+
+<html lang="pl">
+
+	<head>
+
+		<meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="author" content="241296">
+        <meta name="description" content="">
+
+        <link rel="icon" href="assets/img/icons/lua-tab-icon.ico">
+		
+		<link rel="stylesheet" href="../css/style.css">
+        <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.1/build/pure-min.css" integrity="sha384-oAOxQR6DkCoMliIh8yFnu25d7Eq/PHS21PClpwjOTeU2jRSq11vu66rf90/cZr47" crossorigin="anonymous">
+		<link href="https://fonts.googleapis.com/css?family=Mitr:400,500" rel="stylesheet"> 
+    </head>
+    
+	<body>    
+        <div id="layout">        
+            <div id="menu">
+                <div class="pure-menu">        
+                    <ol class="pure-menu-list">
+                        <li class="pure-menu-heading heading-linked"><a class="pure-menu-link" href="../index.html#">Lua</a></li>
+                        <li class="pure-menu-item"><a class="pure-menu-link" href="../index.html#about_lua">O Lua</a></li>
+                        <li class="pure-menu-item"><a class="pure-menu-link" href="../index.html#instalation">Instalacja</a></li>
+                        
+                        <li class="pure-menu-heading menu-item-divided heading-linked"><a class="pure-menu-link" href="course-beginner.html#">Wprowadzenie</a></li>
+                        <li class="pure-menu-item"><a class="pure-menu-link" href="course-beginner.html#basics">Podstawowe informacje</a></li>
+                        <li class="pure-menu-item"><a class="pure-menu-link" href="course-beginner.html#control_flow">Sterowanie przepływem</a></li>
+                        <li class="pure-menu-item"><a class="pure-menu-link" href="course-beginner.html#functions">Funkcje</a></li>
+                        <li class="pure-menu-item"><a class="pure-menu-link" href="course-beginner.html#tables">Tablice</a></li>
+
+                        <li class="pure-menu-heading menu-item-divided heading-linked pure-menu-selected"><a class="pure-menu-link" href="#">Zaawansowany Lua</a></li>
+                        <li class="pure-menu-item"><a class="pure-menu-link" href="#metatables">Metatablice</a></li>
+                        <li class="pure-menu-item"><a class="pure-menu-link" href="#oop">Programowanie obiektowe</a></li>
+                        <li class="pure-menu-item"><a class="pure-menu-link" href="#closures">Domknięcia</a></li>
+
+                        <li class="pure-menu-heading menu-item-divided heading-linked"><a class="pure-menu-link" href="course-cpp.html#">Lua i C++</a></li>
+                        <li class="pure-menu-item"><a class="pure-menu-link" href="course-cpp.html#basics">Podstawowe informacje</a></li>
+                        <li class="pure-menu-item"><a class="pure-menu-link" href="course-cpp.html#instalation">Instalacja sol3</a></li>
+                        <li class="pure-menu-item"><a class="pure-menu-link" href="course-cpp.html#overview">Przegląd funkcji</a></li>
+        
+                        <li class="pure-menu-heading menu-item-divided" style="padding-left: 9.9px;">Materiały</li>
+                        <li class="pure-menu-item"><a class="pure-menu-link" href="https://www.lua.org/manual/5.3/">Dokumentacja Lua</a></li>
+                        <li class="pure-menu-item"><a class="pure-menu-link" href="https://sol2.readthedocs.io/en/latest/">Dokumentacja sol3</a></li>
+                    </ol>
+                </div>
+            </div>
+        
+            <div id="main">
+                <div class="header">
+                  <h1>Zaawansowane metody programowania w Lua</h1>
+                </div>
+        
+                <div class="content">
+                  <h2 class="content-subhead" id="metatable">Matatablice</h2>
+                  <p>
+                    Każda wartość w Lua posiada metatabelę. Metatabela jest zwykłą tabelą Lua, która definiuje zachowanie oryginalnej wartości pod kątem specjalnych operacji. Możliwa jest zmiana szeregu aspektów zachowania wartości przez ustawienie odpowiednich pól metatabeli. Dla przykładu, kiedy wartość nienumeryczna jest operandem dodawania, Lua sprawdza metatabelę tej wartości pod kątem pola <code>__add</code>. Jeżeli znajdzie, to wywoływana jest ta funkcja aby przeprowadzić operację dodawania.
+                  </p>
+                  <p>
+                    Klucze metatabeli nazywane są zdarzeniami a ich wartości metametodami. W poprzednim przykładzie zdarzeniem jest "add" i metametodą jest funkcja wykonująca dodawanie. 
+                  </p>
+                  <p>
+                    Dostęp do metatabeli dowolnej wartości możliwy jest przez wywołanie funkcji getmetatable. Możliwa jest podmiana metatabeli tabel przy pomocy funkcji setmetatable. Nie jest możliwa zmiana metatabel dla innych typów Lua (wyjątek stanowi użycie biblioteki debug), w takim przypadku należy użyć API w języku C. 
+                  </p>
+                  <p>
+                    Poniższy przykład demonstruje "nieskończoną" tablicę, która dla kolejnych indeksów zwróci wartość ciągu fibonacciego na danej pozycji. Taki efekt został osiągnięty przez modyfikacje metatablicy - zdefiniowanie metametody dla klucza <code>__index</code>.
+                  </p>
+                  <pre class="code-block color-background-second"><code>fibs = { 1, 1 }
+setmetatable(fibs, {
+  __index = function(values, n)               
+
+    values[n] = values[n - 1] + values[n - 2]
+    return values[n]
+  end
+})</code> </pre>
+                  <p>Wszystkie dostępne metametody:</p>
+                  <table class="pure-table pure-table-bordered">
+                    <thead>
+                      <tr>
+                        <th>Metametoda</th>
+                        <th>Opis</th>
+                      </tr>
+                    </thead>
+
+                    <tbody>
+                      <tr>
+                        <td><code>__index(table, index)</code></td>
+                        <td>Wywoływana, gdy następuje odwołanie tablicy za pomocą indeksu.</td>
+                      </tr>
+                      <tr>
+                        <td><code>__newindex(table, index, value)</code></td>
+                        <td>Wywoływana, gdy następuje przypisanie do elementu o danym indeksie.</td>
+                      </tr>
+                      <tr>
+                        <td><code>__call(table, ...)</code></td>
+                        <td>Uruchamiana, gdy tablica jest wywołana jak funkcja</td>
+                      </tr>
+                      <tr>
+                        <td><code>__add(table, value)</code></td>
+                        <td>Operator dodawania "+".</td>
+                      </tr>
+                      <tr>
+                        <td><code>__sub(table, value)</code></td>
+                        <td>Operator odejmowania "-".</td>
+                      </tr>
+                      <tr>
+                        <td><code>__mul(table, value)</code></td>
+                        <td>Operator mnożenia "*".</td>
+                      </tr>
+                      <tr>
+                        <td><code>__div(table, value)</code></td>
+                        <td>Operator dzielenia "/".</td>
+                      </tr>
+                      <tr>
+                        <td><code>__mod(table, value)</code></td>
+                        <td>Operator reszty z dzielenia "%".</td>
+                      </tr>
+                      <tr>
+                        <td><code>__pow(table, value)</code></td>
+                        <td>Operator potęgowanie "^".</td>
+                      </tr>
+                      <tr>
+                        <td><code>...</code></td>
+                        <td>...</td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+                  <h2 class="content-subhead" id="oop">Programowanie obiektowe</h2>
+                  <p>
+                    Lua nie posiada natywnego wsparcia do progrmowania obiektowego, jaki znami na przykład z języla C++. Posiada jednak pewien lukier syntaktyczny, który umożliwa emulowanie OOP. Na przykład możemy utworzyć tablicę, Vector, którą będzie pełniła rolę klasy. Następnie definiujemy metody tej klasy w następujący sposób: <code>Vector:nazwa_metody(argumenty...)</code>.
+                  </p>
+                  <p>
+                    Jeżeli chcemy odwołać się do obiektu, na rzecz którego wywoływana jest metoda, należy skorzystać z referencji <code>self</code>.
+                  </p>
+                  <p>
+                    Mechanizm dziedziczenia występuje poprzez ustawienie zdarzenia <code>__index</code> danej klasy na klasę narzędną.
+                  </p>
+                  <pre class="code-block color-background-second"><code>local Vector = {}
+Vector.__index = Vector
+
+function Vector:new(x, y, z)    --konstruktor
+  return setmetatable({x = x, y = y, z = z}, Vector)
+end
+
+function Vector:magnitude()     --metoda
+  return math.sqrt(self.x^2 + self.y^2 + self.z^2)
+end
+
+local vec = Vector:new(0, 1, 0) --utworzenie nowego obiektu vec
+print(vec:magnitude())          --wywołanie metody magnitude
+print(vec.x)                    --dostęp do atrybutu x</code> </pre>
+
+                  <h2 class="content-subhead" id="closures">Domknięcia</h2>
+                  <p>
+                    Domknięcie jest kombinacją funkcji i leksykalnego środowiska w którym ta funkcja została zdeklarowana. To środowisko zawiera każdą zmienną lokalną która była w zasięgu w momencie kiedy domknięcie zostało stworzone
+                  </p>
+                  <pre class="code-block color-background-second"><code>function newCounter ()
+  local i = 0
+  return function ()   --funkcja anonimowa
+    i = i + 1
+    return i
+  end
+end
+
+c1 = newCounter()
+print(c1())  --> 1
+print(c1())  --> 2</code></pre>
+                </div>
+            </div>
+        </div>
+
+        
+	</body>
+</html>
