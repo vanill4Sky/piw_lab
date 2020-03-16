@@ -13,3 +13,9 @@ Technologia: HTML, CSS. Można używać bibliotek CSS, np. bootstrap.css
 ## System uruchomieniowy
 Przygotować docker (dockerfile/docker-compose) z wybranym serwerem WWW i stroną z zadania 1.
 Strona, po uruchomieniu dockera, powinna  być dostępna na komputerze proawdzącecego pod adresem: http://localhost:8080
+
+# Jak uruchomić
+Należy w katalogu projektu uruchomić terminal i wpisać następujące komendy:
+> docker-compose build
+> docker-compose up
+Strona będzie dostępna pod adresm http://localhost:8080
