@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="pl">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="author" content="241296">
+  <meta name="description" content="">
+
+  <link rel="stylesheet" href="../css/bootstrap.css">
+  <link href="https://fonts.googleapis.com/css?family=Mitr:400,500" rel="stylesheet">
+</head>
+
+<body>
+  <div class="p-4 m-4">
+    <h2>Wyrażenia regularne</h1>
+
+      <form class="jumbotron py-4">
+        <fieldset>
+          <legend>Formularz</legend>
+          <div class="container-fluid px-0">
+            <div class="row">
+              <div class="col-sm">
+                <div class="form-group">
+                  <label for="firstname">Imię</label>
+                  <input id="firstname" type="text" class="form-control" placeholder="Imię">
+                </div>
+                <div class="form-group">
+                  <label for="surname">Nazwisko</label>
+                  <input id="surname" type="text" class="form-control" placeholder="Nazwisko">
+                </div>
+                <div class="form-group">
+                  <label for="phoneNumber">Numer telefonu</label>
+                  <input id="phoneNumber" type="tel" class="form-control" placeholder="+48123456789">
+                </div>
+                <div class="form-group">
+                  <label for="birthDate">Data urodzenia</label>
+                  <input id="birthDate" type="text" class="form-control" placeholder="dd.mm.rrrr">
+                </div>
+              </div>
+              <div class="col-sm">
+                <div class="form-group">
+                  <label for="email">Email</label>
+                  <input id="email" type="email" class="form-control" placeholder="Adres email">
+                </div>
+                <div class="form-group">
+                  <label for="username">Nazwa użytkownika</label>
+                  <input id="username" type="text" class="form-control" placeholder="Login">
+                </div>
+                <div class="form-group">
+                  <label for="password">Hasło</label>
+                  <input id="password" type="password" class="form-control" placeholder="Hasło">
+                </div>
+                <div class="form-group">
+                  <label for="confirmPassword">Powtórz hasło</label>
+                  <input id="confirmPassword" type="password" class="form-control" placeholder="Hasło">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="text-right">
+            <button id="submit" class="btn btn-primary" type="button" onClick="submitForm()">
+              Wyślij
+            </button>
+          </div>
+        </fieldset>
+      </form>
+
+      <div id="alertSuccess" class="alert alert-dismissible alert-success my-2" style="display: none;">
+        <button id="closeAlert" type="button" class="close" data-dismiss="alert" onClick="closeAlert(this)">&times;</button>
+        <strong>Formularz został wypełniony poprawnie!</strong>
+      </div>
+  </div>
+</body>
+
+<script src="regexp.js"></script>
+<script src="../js/live.js"></script>
+
+</html>
