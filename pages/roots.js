@@ -60,8 +60,12 @@ function calcAndShowRoots(a, b, c) {
   const resultCardBody = document.getElementById("resultCardBody")
   resultCardBody.innerHTML = "<h4 class=\"card-title\">Wynik</h4>"
   const det = Δ(a, b, c)
-  if (det < 0.0) {
+
+  if ((a === 0 && b === 0) || det < 0) {
     resultCardBody.innerHTML += "<span>Brak rozwiązań</span>"
+  } else if (a === 0) {
+    const x = -c / b
+    resultCardBody.innerHTML += `<span>Jedno rozwiązanie x = ${x}</span>`
   } else if (det === 0) {
     const x = -b / (2 * a)
     resultCardBody.innerHTML += `<span>Jedno rozwiązanie x = ${x}</span>`
@@ -88,7 +92,6 @@ function submitForm() {
     const b = +document.getElementById("b_fact").value
     const c = +document.getElementById("c_fact").value
     calcAndShowRoots(a, b, c)
-
     show(document.getElementById("resultCardBody"))
   } else {
     hide(document.getElementById("resultCardBody"))
