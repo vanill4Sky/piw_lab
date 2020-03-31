@@ -54,6 +54,23 @@ window.addEventListener("resize", function() {
   rocketship.resetPos(starfield)
 })
 
+var animationSpeed = 2
+const buttonSpeedUp = document.getElementById("buttonSpeedUp")
+const buttonSlowDown = document.getElementById("buttonSlowDown")
+const currentSpeedInfo = document.getElementById("currentSpeedInfo")
+
+buttonSpeedUp.addEventListener("click", function() {
+  animationSpeed += 1
+  currentSpeedInfo.innerText = animationSpeed
+})
+
+buttonSlowDown.addEventListener("click", function() {
+  if (animationSpeed > 0) {
+    animationSpeed -= 1
+    currentSpeedInfo.innerText = animationSpeed
+  }
+})
+
 window.setInterval(function() {
-  rocketship.animate(starfield, 2)
+  rocketship.animate(starfield, animationSpeed)
 }, 16)
