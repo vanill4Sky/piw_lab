@@ -1,8 +1,0 @@
-version: '3'
-services:
-    web:
-        image: 241296-lab1
-        build: .
-        ports: 
-            - "8080:8080"
-        
