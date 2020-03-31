@@ -1,84 +1,84 @@
 function show(elem) {
   if (elem != null) {
-    elem.style.display = "block";
+    elem.style.display = "block"
   }
 }
 
 function hide(elem) {
   if (elem != null) {
-    elem.style.display = "none";
+    elem.style.display = "none"
   }
 }
 
 function closeAlert(closeButton) {
-  hide(closeButton.parentNode);
+  hide(closeButton.parentNode)
 }
 
 function createFeedbackDiv(parent, feedbackDivId, feedbackText) {
-  let inputFeedback = document.createElement("div");
-  inputFeedback.setAttribute("id", feedbackDivId);
-  inputFeedback.setAttribute("class", "invalid-feedback");
-  inputFeedback.innerText = feedbackText;
-  parent.appendChild(inputFeedback);
+  const inputFeedback = document.createElement("div")
+  inputFeedback.setAttribute("id", feedbackDivId)
+  inputFeedback.setAttribute("class", "invalid-feedback")
+  inputFeedback.innerText = feedbackText
+  parent.appendChild(inputFeedback)
 
-  return inputFeedback;
+  return inputFeedback
 }
 
 function required(value) {
-  return value != "";
+  return value !== ""
 }
 
 function lettersOnly(value) {
-  return /^[a-zA-Z]+$/.test(value);
+  return /^[a-zA-Z]+$/.test(value)
 }
 
 function phoneNumber(value) {
-  return /^\+48\d{9}$/.test(value);
+  return /^\+48\d{9}$/.test(value)
 }
 
 function lowercaseLettersOnly(value) {
-  return /^[a-z]+$/.test(value);
+  return /^[a-z]+$/.test(value)
 }
 
 function samePassword(value) {
-  return value === document.getElementById("password").value;
+  return value === document.getElementById("password").value
 }
 
 function validEmail(value) {
-  return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(value);
+  return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(value)
 }
 
 function validDate(value) {
-  return /^([0-2]\d|3[01])\.(0[1-9]|1[0-2])\.(\d{4})$/.test(value);
+  return /^([0-2]\d|3[01])\.(0[1-9]|1[0-2])\.(\d{4})$/.test(value)
 }
 
 function makeValidator(constraint, feedbackText) {
   function validator(formInput, feedbackId) {
-    let inputFeedback = document.getElementById(feedbackId);
+    let inputFeedback = document.getElementById(feedbackId)
 
     if (!constraint(formInput.value)) {
-      formInput.classList.add("is-invalid");
+      formInput.classList.add("is-invalid")
 
       if (inputFeedback == null) {
-        let parent = formInput.parentNode;
-        inputFeedback = createFeedbackDiv(parent, feedbackId, feedbackText);
+        const parent = formInput.parentNode
+        inputFeedback = createFeedbackDiv(parent, feedbackId, feedbackText)
       } else {
-        inputFeedback.innerText = feedbackText;
-        show(inputFeedback);
+        inputFeedback.innerText = feedbackText
+        show(inputFeedback)
       }
 
-      return false;
+      return false
     }
 
-    formInput.classList.remove("is-invalid");
-    hide(inputFeedback);
+    formInput.classList.remove("is-invalid")
+    hide(inputFeedback)
 
-    return true;
+    return true
   }
-  return validator;
+  return validator
 }
 
-form = [
+var form = [
   {
     inputId: "firstname",
     feedbackId: "firstname_feedback",
@@ -124,7 +124,10 @@ form = [
     feedbackId: "username_feedback",
     validators: [
       makeValidator(required, "To pole jest wymagane!"),
-      makeValidator(lowercaseLettersOnly, "Pole może zawierać tylko małe litery!")
+      makeValidator(
+        lowercaseLettersOnly,
+        "Pole może zawierać tylko małe litery!"
+      )
     ]
   },
   {
@@ -140,21 +143,23 @@ form = [
       makeValidator(samePassword, "Podane hasła się różnią!")
     ]
   }
-];
+]
 
 function submitForm() {
-  isFormValid = true;
+  let isFormValid = true
 
-  for (let control of form) {
-    for (let validator of control.validators) {
-      if (!validator(document.getElementById(control.inputId), control.feedbackId)) {
-        isFormValid = false;
-        break;
+  for (const control of form) {
+    for (const validator of control.validators) {
+      if (
+        !validator(document.getElementById(control.inputId), control.feedbackId)
+      ) {
+        isFormValid = false
+        break
       }
     }
   }
-  if (isFormValid){
-    show(document.getElementById("alertSuccess"));
+  if (isFormValid) {
+    show(document.getElementById("alertSuccess"))
   } else {
     hide(document.getElementById("alertSuccess"))
   }
