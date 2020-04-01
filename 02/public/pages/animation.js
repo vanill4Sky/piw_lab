@@ -20,7 +20,7 @@ const starfield = {
   }
 }
 
-const rocketship = {
+const fly = {
   image: document.getElementById("rocketshipImage"),
   resetPos: function(starfield) {
     const verticalCenter = starfield.pos.y + starfield.image.clientHeight / 2 - this.image.clientHeight / 2
@@ -46,18 +46,21 @@ const rocketship = {
   }
 }
 
-starfield.resetPos()
-rocketship.resetPos(starfield)
-
-window.addEventListener("resize", function() {
+function init() {
   starfield.resetPos()
-  rocketship.resetPos(starfield)
-})
+  fly.resetPos(starfield)
+}
 
 var animationSpeed = 2
 const buttonSpeedUp = document.getElementById("buttonSpeedUp")
 const buttonSlowDown = document.getElementById("buttonSlowDown")
 const currentSpeedInfo = document.getElementById("currentSpeedInfo")
+
+init()
+
+window.addEventListener("resize", init)
+
+window.addEventListener("load", init)
 
 buttonSpeedUp.addEventListener("click", function() {
   animationSpeed += 1
@@ -72,5 +75,5 @@ buttonSlowDown.addEventListener("click", function() {
 })
 
 window.setInterval(function() {
-  rocketship.animate(starfield, animationSpeed)
+  fly.animate(starfield, animationSpeed)
 }, 16)
