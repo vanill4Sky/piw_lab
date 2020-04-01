@@ -17,8 +17,23 @@
     
     <div class="jumbotron">
         <div class="text-center" >
-          <img id="starfieldImage" src="../img/starfield.gif" class="img-fluid" alt="Kosmos">
+          <img id="starfieldImage" src="../img/starfield.gif" style="width: 100%; height: 100%" alt="Kosmos">
           <img id="rocketshipImage" src="../img/rocketship.gif" style="position: absolute" alt="Statek kosmiczny">
+        </div>
+        <div class="text-center">
+          <div class="container-fluid" style="width: 40%;">
+            <div class="row mt-3">
+              <div id="buttonSlowDown" class="col-4">
+                <button class="btn btn-block btn-primary">—</button>
+              </div>
+              <div class="col-4">
+                <button id="currentSpeedInfo" class="btn btn-block btn-outline-info" disabled>2</button>
+              </div>
+              <div id="buttonSpeedUp" class="col-4">
+                <button class="btn btn-block btn-primary">+</button>
+              </div>
+            </div>
+          </div>
         </div>
     </div>
   </div>
