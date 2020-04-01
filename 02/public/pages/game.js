@@ -110,7 +110,7 @@ window.setInterval(function() {
     fly.image.src = flySrc
     fly.isFly = true
   } else {
-    if (Math.random() * 10 > 8) {
+    if (Math.random() * 10 > 7) {
       fly.image.src = spiderSrc
       fly.isFly = false
     }
