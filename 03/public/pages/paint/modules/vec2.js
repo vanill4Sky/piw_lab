@@ -4,16 +4,28 @@ export class Vec2 {
     this.y = y
   }
 
-  add(other) {
-    this.x += other.x
-    this.y += other.y
-    return this
+  add(rhs) {
+    if (rhs.x !== undefined && rhs.y !== undefined) {
+      return new Vec2(this.x + rhs.x, this.y + rhs.y)
+    } else {
+      return new Vec2(this.x + rhs, this.y + rhs)
+    }
   }
 
-  sub(other) {
-    this.x -= other.x
-    this.y -= other.y
-    return this
+  sub(rhs) {
+    if (rhs.x !== undefined && rhs.y !== undefined) {
+      return new Vec2(this.x - rhs.x, this.y - rhs.y)
+    } else {
+      return new Vec2(this.x - rhs, this.y - rhs)
+    }
+  }
+
+  mul(rhs) {
+    if (rhs.x !== undefined && rhs.y !== undefined) {
+      return new Vec2(this.x * +rhs.x, this.y * rhs.y)
+    } else {
+      return new Vec2(this.x * +rhs, this.y * rhs)
+    }
   }
 
   copy() {
@@ -21,7 +33,7 @@ export class Vec2 {
   }
 
   static add(lhs, rhs) {
-    if (rhs.x && rhs.y) {
+    if (rhs.x !== undefined && rhs.y !== undefined) {
       return new Vec2(lhs.x + rhs.x, lhs.y + rhs.y)
     } else {
       return new Vec2(lhs.x + rhs, lhs.y + rhs)
@@ -29,7 +41,7 @@ export class Vec2 {
   }
 
   static sub(lhs, rhs) {
-    if (rhs.x && rhs.y) {
+    if (rhs.x !== undefined && rhs.y !== undefined) {
       return new Vec2(lhs.x - rhs.x, lhs.y - rhs.y)
     } else {
       return new Vec2(lhs.x - rhs, lhs.y - rhs)
@@ -37,7 +49,7 @@ export class Vec2 {
   }
 
   static mul(lhs, rhs) {
-    if (rhs.x && rhs.y) {
+    if (rhs.x !== undefined && rhs.y !== undefined) {
       return new Vec2(lhs.x * rhs.x, lhs.y * rhs.y)
     } else {
       return new Vec2(lhs.x * rhs, lhs.y * rhs)

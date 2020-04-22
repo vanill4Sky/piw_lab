@@ -1,3 +1,5 @@
+"use strict"
+
 import { Vec2 } from "./modules/vec2.js"
 
 const width = document.getElementById("gameMapCanvas").width
@@ -7,12 +9,19 @@ class Game {
   constructor() {
     this.map = new Map(document.getElementById("gameMapCanvas"))
     this.ball = new Ball()
-    this.collider = new Collider(this.map, this.ball, null)
+    this.paddle = new Paddle()
+    this.collider = new Collider(this.map, this.ball, this.paddle)
+
+    this.keyboardState = {
+      ArrowLeft: false,
+      ArrowRight: false
+    }
 
     this.init()
   }
 
   init() {
+    this.initInput()
     this.draw()
   }
 
@@ -23,13 +32,40 @@ class Game {
   }
 
   handleInput() {
+    if (this.keyboardState.ArrowLeft) {
+      this.paddle.changeDirection(-1)
+    } else if (this.keyboardState.ArrowRight) {
+      this.paddle.changeDirection(1)
+    } else {
+      this.paddle.changeDirection(0)
+    }
+  }
 
+  initInput() {
+    window.addEventListener("keydown", (e) => {
+      this.keyboardState[e.key] = true
+    })
+    window.addEventListener("keyup", (e) => {
+      this.keyboardState[e.key] = false
+    })
   }
 
   update(dt) {
     this.ball.changeDirection(this.collider.collisionBallBorders(dt))
-    this.ball.changeDirection(this.collider.collisionBallTiles(dt))
+    const collisionBallTiles = this.collider.collisionBallTiles(dt)
+    if (collisionBallTiles) {
+      this.ball.changeDirection(collisionBallTiles.collision)
+      this.map.currentLevel[collisionBallTiles.tile.y][collisionBallTiles.tile.x] = 0
+    }
+    if (this.collider.collisionBallPaddle(dt)) {
+      this.ball.dir.y *= -1
+    }
+    if (this.collider.collisionPaddleBorders(dt)) {
+      this.paddle.changeDirection(0)
+    }
+
     this.ball.move(dt)
+    this.paddle.move(dt)
   }
 
   draw() {
@@ -37,6 +73,7 @@ class Game {
     this.map.loadLevel(testLevel)
     this.map.drawLevel()
     this.ball.draw(this.map.ctx)
+    this.paddle.draw(this.map.ctx)
   }
 }
 
@@ -88,7 +125,14 @@ class Map {
 const testLevel = [
   [0, 2, 2, 2, 0, 0, 0, 2, 2, 2, 0],
   [0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0],
-  [0, 0, 1, 0, 0]
+  [0, 0, 1, 0, 0],
+  [0, 0, 0, 0, 0],
+  [0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0],
+  [0, 0, 1, 0, 0],
+  [0, 1, 0, 1, 0],
+  [0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0],
+  [0, 0, 0, 0, 0],
+  [1, 0, 1]
 ]
 
 class Ball {
@@ -122,11 +166,36 @@ class Ball {
   }
 }
 
+class Paddle {
+  constructor() {
+    this.size = new Vec2(100, 20)
+    this.pos = new Vec2((width - this.size.x) / 2, height - 2 * this.size.y)
+    this.speed = 20
+    this.dir = 0
+    this.color = "white"
+  }
+
+  changeDirection(dir) {
+    this.dir = dir
+  }
+
+  move(dt) {
+    this.pos.x += (this.speed * this.dir * dt)
+  }
+
+  draw(ctx) {
+    ctx.beginPath()
+    ctx.fillStyle = this.color
+    ctx.fillRect(this.pos.x, this.pos.y, this.size.x, this.size.y)
+    ctx.closePath()
+  }
+}
+
 class Collider {
-  constructor(map, ball, pane) {
+  constructor(map, ball, paddle) {
     this.map = map
     this.ball = ball
-    this.pane = pane
+    this.paddle = paddle
   }
 
   collisionBallBorders(dt) {
@@ -146,10 +215,11 @@ class Collider {
   collisionBallTiles(dt) {
     const collision = new Vec2(false, false)
     const newBallPos = this.ball.pos.add(this.ball.dir.mul(this.ball.speed).mul(dt))
-    const newBallTop = +newBallPos.y - this.ball.size
-    const newBallBottom = +newBallPos.y + this.ball.size
-    const newBallLeft = +newBallPos.x - this.ball.size
-    const newBallRight = +newBallPos.x + this.ball.size
+    const bbSize = this.ball.size * 0.5
+    const newBallTop = +newBallPos.y - bbSize
+    const newBallBottom = +newBallPos.y + bbSize
+    const newBallLeft = +newBallPos.x - bbSize
+    const newBallRight = +newBallPos.x + bbSize
 
     const cols = this.map.currentLevel.map((value) => value.length)
     const maxColumnLength = Math.max(...cols)
@@ -166,24 +236,52 @@ class Collider {
           const tileLeft = x * tileWidth
           const tileRight = (x + 1) * tileWidth
 
-          if ((newBallRight >= tileLeft && newBallLeft <= tileRight) &&
-            ((newBallTop <= tileBottom && newBallBottom > tileBottom) ||
-              (newBallBottom >= tileTop && newBallTop < tileTop))) {
-            collision.y = true
-          } else if ((newBallBottom >= tileTop && newBallTop <= tileBottom) &&
+          if ((newBallBottom >= tileTop && newBallTop <= tileBottom) &&
             ((newBallRight >= tileLeft && newBallLeft < tileLeft) ||
               (newBallLeft <= tileRight && newBallRight > tileRight))) {
             collision.x = true
+          } else if ((newBallRight >= tileLeft && newBallLeft <= tileRight) &&
+            ((newBallTop <= tileBottom && newBallBottom > tileBottom) ||
+              (newBallBottom >= tileTop && newBallTop < tileTop))) {
+            collision.y = true
           }
 
           if (collision.x || collision.y) {
-            return collision
+            return {
+              collision: collision,
+              tile: new Vec2(x, y)
+            }
           }
         }
       }
     }
 
-    return collision
+    return null
+  }
+
+  collisionPaddleBorders(dt) {
+    const paddleNextPosLeft = this.paddle.pos.x + this.paddle.speed * this.paddle.dir * dt
+
+    return (paddleNextPosLeft < 0) || ((paddleNextPosLeft + this.paddle.size.x) > width)
+  }
+
+  collisionBallPaddle(dt) {
+    const paddleNextPosLeft = this.paddle.pos.x + this.paddle.speed * this.paddle.dir * dt
+    const paddleNextPosRight = this.paddle.pos.x + this.paddle.speed * this.paddle.dir * dt + this.paddle.size.x
+    const newBallPos = this.ball.pos.add(this.ball.dir.mul(this.ball.speed).mul(dt))
+    const bbSize = this.ball.size * 0.5
+    const newBallBottom = +newBallPos.y + bbSize
+    const newBallLeft = +newBallPos.x - bbSize
+    const newBallRight = +newBallPos.x + bbSize
+
+    if (newBallBottom >= this.paddle.pos.y) {
+      if (newBallLeft <= paddleNextPosRight && newBallRight >= paddleNextPosLeft) {
+        return true
+      } else {
+        return false
+      }
+    }
+    return false
   }
 }
 
