@@ -28,6 +28,7 @@ class Game {
 
   update(dt) {
     this.ball.changeDirection(this.collider.collisionBallBorders(dt))
+    this.ball.changeDirection(this.collider.collisionBallTiles(dt))
     this.ball.move(dt)
   }
 
@@ -92,10 +93,10 @@ const testLevel = [
 
 class Ball {
   constructor() {
-    this.size = 20
-    this.pos = new Vec2(250, 50)
+    this.size = 10
+    this.pos = new Vec2(100, 250)
     this.dir = new Vec2(-1, -1)
-    this.speed = new Vec2(10, 10)
+    this.speed = new Vec2(20, 10)
     this.color = "red"
   }
 
@@ -137,6 +138,49 @@ class Collider {
     }
     if ((newBallPos.y - this.ball.size) < 0 || (newBallPos.y + this.ball.size) >= height) {
       collision.y = true
+    }
+
+    return collision
+  }
+
+  collisionBallTiles(dt) {
+    const collision = new Vec2(false, false)
+    const newBallPos = this.ball.pos.add(this.ball.dir.mul(this.ball.speed).mul(dt))
+    const newBallTop = +newBallPos.y - this.ball.size
+    const newBallBottom = +newBallPos.y + this.ball.size
+    const newBallLeft = +newBallPos.x - this.ball.size
+    const newBallRight = +newBallPos.x + this.ball.size
+
+    const cols = this.map.currentLevel.map((value) => value.length)
+    const maxColumnLength = Math.max(...cols)
+    const levelHeight = this.map.currentLevel.length
+    const tileHeight = width / maxColumnLength
+
+    for (let y = 0; y < levelHeight; ++y) {
+      const levelWidth = this.map.currentLevel[y].length
+      const tileWidth = width / levelWidth
+      for (let x = 0; x < levelWidth; ++x) {
+        if (this.map.currentLevel[y][x] !== 0) {
+          const tileTop = y * tileHeight
+          const tileBottom = (y + 1) * tileHeight
+          const tileLeft = x * tileWidth
+          const tileRight = (x + 1) * tileWidth
+
+          if ((newBallRight >= tileLeft && newBallLeft <= tileRight) &&
+            ((newBallTop <= tileBottom && newBallBottom > tileBottom) ||
+              (newBallBottom >= tileTop && newBallTop < tileTop))) {
+            collision.y = true
+          } else if ((newBallBottom >= tileTop && newBallTop <= tileBottom) &&
+            ((newBallRight >= tileLeft && newBallLeft < tileLeft) ||
+              (newBallLeft <= tileRight && newBallRight > tileRight))) {
+            collision.x = true
+          }
+
+          if (collision.x || collision.y) {
+            return collision
+          }
+        }
+      }
     }
 
     return collision
