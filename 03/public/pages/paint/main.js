@@ -54,7 +54,6 @@ class Paint {
       this.currentColor = this.colorPicker.value
     })
 
-
     for (const row of this.shapeSelector.children) {
       for (const button of row.children) {
         button.addEventListener("click", () => {

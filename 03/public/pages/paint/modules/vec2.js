@@ -20,8 +20,28 @@ export class Vec2 {
     return new Vec2(this.x, this.y)
   }
 
+  static add(lhs, rhs) {
+    if (rhs.x && rhs.y) {
+      return new Vec2(lhs.x + rhs.x, lhs.y + rhs.y)
+    } else {
+      return new Vec2(lhs.x + rhs, lhs.y + rhs)
+    }
+  }
+
   static sub(lhs, rhs) {
-    return new Vec2(lhs.x - rhs.x, lhs.y - rhs.y)
+    if (rhs.x && rhs.y) {
+      return new Vec2(lhs.x - rhs.x, lhs.y - rhs.y)
+    } else {
+      return new Vec2(lhs.x - rhs, lhs.y - rhs)
+    }
+  }
+
+  static mul(lhs, rhs) {
+    if (rhs.x && rhs.y) {
+      return new Vec2(lhs.x * rhs.x, lhs.y * rhs.y)
+    } else {
+      return new Vec2(lhs.x * rhs, lhs.y * rhs)
+    }
   }
 
   static abs(vec2) {

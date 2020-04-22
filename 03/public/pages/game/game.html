@@ -15,11 +15,16 @@
   <div class="p-4 m-4">
     <h2>Gra</h1>
 
-    <div class="jumbotron py-4"></div>
+      <div class="jumbotron py-4">
+        <div id="canvasWrapper">
+          <canvas id="gameMapCanvas" class="d-block m-auto border border-secondary" width="500" height="500"
+            style="max-width: 100%; height: auto;"></canvas>
+        </div>
+      </div>
   </div>
 </body>
 
-<script src="game.js"></script>
+<script type="module" src="main.js"></script>
 <script src="../../js/live.js"></script>
 
 </html>
