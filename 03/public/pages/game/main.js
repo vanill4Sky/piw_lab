@@ -1,16 +1,18 @@
 "use strict"
 
+import { width, height, resultatnSpeed } from "./modules/constants.js"
 import { Vec2 } from "./modules/vec2.js"
 
-const width = document.getElementById("gameMapCanvas").width
-const height = document.getElementById("gameMapCanvas").height
-const resultatnSpeed = 10
-
+import { Ball } from "./modules/ball.js"
+import { Paddle } from "./modules/paddle.js"
+import { Map } from "./modules/map.js"
 class Game {
   constructor() {
-    this.map = new Map(document.getElementById("gameMapCanvas"))
-    this.ball = new Ball()
-    this.paddle = new Paddle()
+    this.canvas = document.getElementById("gameMapCanvas")
+    this.ctx = this.canvas.getContext("2d")
+    this.map = new Map(testLevel)
+    this.ball = new Ball(10, new Vec2(250, 250), new Vec2(-1, -1), "#C25C19")
+    this.paddle = new Paddle(new Vec2(100, 20), new Vec2(250, 40), 5, "#C25C19")
     this.collider = new Collider(this.map, this.ball, this.paddle)
     this.ballPaused = true
 
@@ -24,8 +26,13 @@ class Game {
   }
 
   init() {
+    window.addEventListener("keydown", (e) => {
+      this.keyboardState[e.key] = true
+    })
+    window.addEventListener("keyup", (e) => {
+      this.keyboardState[e.key] = false
+    })
     this.resetEntitiesPosition()
-    this.initInput()
     this.draw()
   }
 
@@ -53,25 +60,29 @@ class Game {
     }
   }
 
-  initInput() {
-    window.addEventListener("keydown", (e) => {
-      this.keyboardState[e.key] = true
-    })
-    window.addEventListener("keyup", (e) => {
-      this.keyboardState[e.key] = false
-    })
-  }
-
   update(dt) {
-    this.ball.changeDirection(this.collider.collisionBallBorders(dt))
+    const ballNextPosition = this.ball.nextPosition(dt)
+    const paddleNextPosition = this.paddle.nextPosition(dt)
 
-    const collisionBallTiles = this.collider.collisionBallTiles(dt)
+    const ballBoundingBox = this.ball.boundingBox(ballNextPosition)
+    const paddleBoundingBox = this.paddle.boundingBox(paddleNextPosition)
+
+    // walls
+    this.ball.changeDirection(this.collider.collisionBallBorders(ballBoundingBox))
+
+    if (this.collider.collisionPaddleBorders(paddleBoundingBox)) {
+      this.paddle.changeDirection(0)
+    }
+
+    // ball and tiles
+    const collisionBallTiles = this.collider.collisionBallTiles(ballBoundingBox)
     if (collisionBallTiles) {
       this.ball.changeDirection(collisionBallTiles.collision)
       this.map.currentLevel[collisionBallTiles.tile.y][collisionBallTiles.tile.x] -= 1
     }
 
-    const collisionBallPaddle = this.collider.collisionBallPaddle(dt)
+    // ball and paddle
+    const collisionBallPaddle = this.collider.collisionBallPaddle(ballBoundingBox, paddleBoundingBox)
     if (collisionBallPaddle) {
       if (collisionBallPaddle.collision) {
         this.ball.dir.y *= -1
@@ -89,10 +100,6 @@ class Game {
       }
     }
 
-    if (this.collider.collisionPaddleBorders(dt)) {
-      this.paddle.changeDirection(0)
-    }
-
     if (!this.ballPaused) {
       this.ball.move(dt)
     }
@@ -100,11 +107,11 @@ class Game {
   }
 
   draw() {
-    this.map.ctx.clearRect(0, 0, this.map.canvas.width, this.map.canvas.height)
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
     this.map.loadLevel(testLevel)
-    this.map.drawLevel()
-    this.ball.draw(this.map.ctx)
-    this.paddle.draw(this.map.ctx)
+    this.map.drawLevel(this.ctx)
+    this.ball.draw(this.ctx)
+    this.paddle.draw(this.ctx)
   }
 
   resetEntitiesPosition() {
@@ -116,121 +123,14 @@ class Game {
   }
 }
 
-class Map {
-  constructor(canvas) {
-    this.canvas = canvas
-    this.ctx = canvas.getContext("2d")
-    this.currentLevel = {}
-  }
-
-  loadLevel(level) {
-    this.currentLevel = level
-  }
-
-  drawLevel() {
-    const cols = this.currentLevel.map((value) => value.length)
-    const maxColumnLength = Math.max(...cols)
-    const levelHeight = this.currentLevel.length
-    const tileHeight = width / maxColumnLength
-
-    this.ctx.beginPath()
-    for (let y = 0; y < levelHeight; ++y) {
-      const levelWidth = this.currentLevel[y].length
-      const tileWidth = width / levelWidth
-      for (let x = 0; x < levelWidth; ++x) {
-        const tileValue = this.currentLevel[y][x]
-        if (tileValue !== 0) {
-          this.ctx.fillStyle = this.chooseColor(this.currentLevel[y][x])
-          this.ctx.fillRect(x * tileWidth, y * tileHeight, tileWidth, tileHeight)
-          this.ctx.strokeStyle = "white"
-          this.ctx.rect(x * tileWidth, y * tileHeight, tileWidth, tileHeight)
-          this.ctx.stroke()
-        }
-      }
-    }
-    this.ctx.closePath()
-  }
-
-  chooseColor(tileValue) {
-    switch (tileValue) {
-      case 1:
-        return "#0DE0FF"
-      case 2:
-        return "#007DFF"
-      case 3:
-        return "#05106E"
-    }
-  }
-}
-
 const testLevel = [
-  [0, 2, 3, 2, 0, 0, 0, 2, 3, 2, 0],
-  [0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0],
-  [0, 0, 1, 0, 0],
-  [0, 0, 0, 0, 0],
-  [0, 2, 0, 1, 0, 0, 0, 1, 0, 2, 0],
-  [0, 0, 1, 0, 0],
-  [0, 1, 0, 1, 0],
-  [0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0],
-  [0, 0, 0, 0, 0],
-  [1, 0, 1]
+  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+  [1, 1, 1, 1, 1, 1, 1, 1, 1],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [1, 1, 1, 1, 1, 1]
 ]
-
-class Ball {
-  constructor() {
-    this.size = 10
-    this.pos = new Vec2(100, 250)
-    this.dir = new Vec2(-1, -1)
-    this.speed = new Vec2(resultatnSpeed / 2, resultatnSpeed / 2)
-    this.color = "#C25C19"
-  }
-
-  changeDirection(collision) {
-    if (collision.x) {
-      this.dir.x *= -1
-    }
-    if (collision.y) {
-      this.dir.y *= -1
-    }
-  }
-
-  move(dt) {
-    this.pos = this.pos.add(this.dir.mul(this.speed).mul(dt))
-  }
-
-  draw(ctx) {
-    ctx.beginPath()
-    ctx.fillStyle = this.color
-    ctx.arc(this.pos.x, this.pos.y, this.size, 0, 2 * Math.PI)
-    ctx.fill()
-    ctx.closePath()
-  }
-}
-
-class Paddle {
-  constructor() {
-    this.size = new Vec2(200, 20)
-    this.pos = new Vec2((width - this.size.x) / 2, height - 2 * this.size.y)
-    this.speed = 20
-    this.dir = 0
-    this.color = "#C25C19"
-  }
-
-  changeDirection(dir) {
-    this.dir = dir
-  }
-
-  move(dt) {
-    this.pos.x += (this.speed * this.dir * dt)
-  }
-
-  draw(ctx) {
-    ctx.beginPath()
-    ctx.fillStyle = this.color
-    ctx.fillRect(this.pos.x, this.pos.y, this.size.x, this.size.y)
-    ctx.closePath()
-  }
-}
 
 class Collider {
   constructor(map, ball, paddle) {
@@ -239,51 +139,36 @@ class Collider {
     this.paddle = paddle
   }
 
-  collisionBallBorders(dt) {
+  collisionBallBorders(bb) {
     const collision = new Vec2(false, false)
-    const newBallPos = this.ball.pos.add(this.ball.dir.mul(this.ball.speed).mul(dt))
 
-    if ((newBallPos.x - this.ball.size) < 0 || (newBallPos.x + this.ball.size) >= width) {
+    if (bb.left < 0 || bb.right >= width) {
       collision.x = true
     }
-    if ((newBallPos.y - this.ball.size) < 0 || (newBallPos.y + this.ball.size) >= height) {
+    if (bb.top < 0 || bb.bottom >= height) {
       collision.y = true
     }
 
     return collision
   }
 
-  collisionBallTiles(dt) {
+  // it takes ball bounding box in the next position
+  collisionBallTiles(bbBall) {
     const collision = new Vec2(false, false)
-    const newBallPos = this.ball.pos.add(this.ball.dir.mul(this.ball.speed).mul(dt))
-    const bbSize = this.ball.size * 0.5
-    const newBallTop = +newBallPos.y - bbSize
-    const newBallBottom = +newBallPos.y + bbSize
-    const newBallLeft = +newBallPos.x - bbSize
-    const newBallRight = +newBallPos.x + bbSize
 
-    const cols = this.map.currentLevel.map((value) => value.length)
-    const maxColumnLength = Math.max(...cols)
-    const levelHeight = this.map.currentLevel.length
-    const tileHeight = width / maxColumnLength
-
-    for (let y = 0; y < levelHeight; ++y) {
+    for (let y = 0; y < this.map.levelHeight; ++y) {
       const levelWidth = this.map.currentLevel[y].length
-      const tileWidth = width / levelWidth
       for (let x = 0; x < levelWidth; ++x) {
         if (this.map.currentLevel[y][x] !== 0) {
-          const tileTop = y * tileHeight
-          const tileBottom = (y + 1) * tileHeight
-          const tileLeft = x * tileWidth
-          const tileRight = (x + 1) * tileWidth
+          const bbTile = this.map.bb[[y, x]]
 
-          if ((newBallBottom >= tileTop && newBallTop <= tileBottom) &&
-            ((newBallRight >= tileLeft && newBallLeft < tileLeft) ||
-              (newBallLeft <= tileRight && newBallRight > tileRight))) {
+          if ((bbBall.bottom >= bbTile.top && bbBall.top <= bbTile.bottom) &&
+            ((bbBall.right >= bbTile.left && bbBall.left < bbTile.left) ||
+              (bbBall.left <= bbTile.right && bbBall.right > bbTile.right))) {
             collision.x = true
-          } else if ((newBallRight >= tileLeft && newBallLeft <= tileRight) &&
-            ((newBallTop <= tileBottom && newBallBottom > tileBottom) ||
-              (newBallBottom >= tileTop && newBallTop < tileTop))) {
+          } else if ((bbBall.right >= bbTile.left && bbBall.left <= bbTile.right) &&
+            ((bbBall.top <= bbTile.bottom && bbBall.bottom > bbTile.bottom) ||
+              (bbBall.bottom >= bbTile.top && bbBall.top < bbTile.top))) {
             collision.y = true
           }
 
@@ -300,25 +185,15 @@ class Collider {
     return null
   }
 
-  collisionPaddleBorders(dt) {
-    const paddleNextPosLeft = this.paddle.pos.x + this.paddle.speed * this.paddle.dir * dt
-
-    return (paddleNextPosLeft < 0) || ((paddleNextPosLeft + this.paddle.size.x) > width)
+  collisionPaddleBorders(bb) {
+    return (bb.left < 0) || (bb.right > width)
   }
 
-  collisionBallPaddle(dt) {
-    const paddleNextPosLeft = this.paddle.pos.x + this.paddle.speed * this.paddle.dir * dt
-    const paddleNextPosRight = this.paddle.pos.x + this.paddle.speed * this.paddle.dir * dt + this.paddle.size.x
-    const newBallPos = this.ball.pos.add(this.ball.dir.mul(this.ball.speed).mul(dt))
-    const bbSize = this.ball.size * 0.5
-    const newBallBottom = +newBallPos.y + bbSize
-    const newBallLeft = +newBallPos.x - bbSize
-    const newBallRight = +newBallPos.x + bbSize
-
-    if (newBallBottom >= this.paddle.pos.y) {
-      if (newBallLeft <= paddleNextPosRight && newBallRight >= paddleNextPosLeft) {
-        const paddleSizeRelative = this.paddle.size.x + 2 * bbSize
-        const ballLeftRelative = newBallRight - paddleNextPosLeft
+  collisionBallPaddle(bbBall, bbPaddle) {
+    if (bbBall.bottom >= bbPaddle.top) {
+      if (bbBall.left <= bbPaddle.right && bbBall.right >= bbPaddle.left) {
+        const paddleSizeRelative = this.paddle.size.x + 2 * this.ball.bbSize
+        const ballLeftRelative = bbBall.right - bbPaddle.left
         return {
           collision: true,
           relativePos: (ballLeftRelative / paddleSizeRelative) - 0.5
@@ -335,7 +210,7 @@ class Collider {
 
 const game = new Game()
 
-var updatesPerFrame = 3
+var updatesPerFrame = 2
 var updatesCounter = 0
 window.setInterval(() => {
   if (updatesCounter === updatesPerFrame) {
