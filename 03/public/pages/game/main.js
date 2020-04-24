@@ -83,10 +83,10 @@ class Game {
       this.paddle.changeDirection(0)
     }
 
-    if (this.keyboardState[" "]) {
+    if (this.keyboardState.Control) {
       this.isPauseButtonPressed = true
     }
-    if ((this.keyboardState[" "] === false) && this.isPauseButtonPressed) {
+    if ((this.keyboardState.Control === false) && this.isPauseButtonPressed) {
       this.ballPaused = !this.ballPaused
       this.isPauseButtonPressed = false
     }
