@@ -37,7 +37,7 @@ export class Map {
 
   hit(row, col) {
     --this.currentLevel[row][col]
-    if (this.currentLevel[row][col] === 0) {
+    if (this.currentLevel[row][col] <= 0) {
       delete this.bb[[row, col]]
     }
   }

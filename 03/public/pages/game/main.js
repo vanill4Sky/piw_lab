@@ -23,6 +23,7 @@ class Game {
     this.nextLevelIdx = 0
     this.playerChangeLevel = false
     this.gameover = false
+    this.points = 0
 
     this.keyboardState = {
       ArrowLeft: false,
@@ -51,7 +52,6 @@ class Game {
     for (let i = 0; i < levels.levelSet.length; ++i) {
       const listItem = document.createElement("li")
       listItem.setAttribute("class", "list-group-item list-group-item-action")
-      // listItem.setAttribute("class", "list-group-item list-group-item-action disabled")
       listItem.setAttribute("id", `level${i}`)
       const thisGame = this
       listItem.addEventListener("click", () => {
@@ -108,6 +108,7 @@ class Game {
     if (collisionBallTiles) {
       this.ball.changeDirection(collisionBallTiles.collision)
       this.map.hit(collisionBallTiles.tile.y, collisionBallTiles.tile.x)
+      this.points += 2
     }
 
     // ball and paddle
@@ -125,6 +126,7 @@ class Game {
         this.ball.speed.x = resultatnSpeed - this.ball.speed.y
       } else if (collisionBallPaddle.collision === false) {
         this.resetAndPause()
+        this.points -= 10
       }
     }
 
@@ -148,6 +150,11 @@ class Game {
     this.map.drawLevel(this.ctx)
     this.ball.draw(this.ctx)
     this.paddle.draw(this.ctx)
+    this.ctx.beginPath()
+    this.ctx.font = "30px Impact"
+    this.ctx.fillStyle = "white"
+    this.ctx.fillText(`Punkty: ${this.points}`, 0, 30)
+    this.ctx.closePath()
   }
 
   drawGameover() {
@@ -173,7 +180,6 @@ class Game {
       listItemPrev.classList.remove("active")
 
       const listItem = document.getElementById(`level${this.nextLevelIdx}`)
-      listItem.classList.remove("disabled")
       listItem.classList.add("active")
 
       this.currentLevelIdx = this.nextLevelIdx
@@ -182,9 +188,33 @@ class Game {
     }
     return false
   }
+
+  loadGame(gamesave) {
+    // game
+    game.nextLevelIdx = gamesave.currentLevelIdx
+    game.points = gamesave.points
+    game.nextLevel(levels.levelSet)
+
+    // map
+    for (const attr in gamesave.map) {
+      game.map[attr] = gamesave.map[attr]
+    }
+  }
 }
 
 const game = new Game()
+
+const saveButton = document.getElementById("saveGame")
+const loadButton = document.getElementById("loadGame")
+
+saveButton.addEventListener("click", () => {
+  localStorage.setItem("arkanoidSave", JSON.stringify(game))
+})
+
+loadButton.addEventListener("click", () => {
+  const gamesave = JSON.parse(localStorage.getItem("arkanoidSave"))
+  game.loadGame(gamesave)
+})
 
 var updatesPerFrame = 2
 var updatesCounter = 0
