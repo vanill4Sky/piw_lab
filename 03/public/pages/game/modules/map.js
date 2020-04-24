@@ -1,9 +1,8 @@
 import * as c from "./constants.js"
 
 export class Map {
-  constructor(level) {
+  constructor() {
     this.bb = {}
-    this.loadLevel(level)
   }
 
   loadLevel(level) {
@@ -16,9 +15,8 @@ export class Map {
 
   calcBoundingBoxes() {
     for (let y = 0; y < this.levelHeight; ++y) {
-      const levelWidth = this.currentLevel[y].length
-      const tileWidth = c.width / levelWidth
-      for (let x = 0; x < levelWidth; ++x) {
+      const tileWidth = c.width / this.cols[y]
+      for (let x = 0; x < this.cols[y]; ++x) {
         const tileValue = this.currentLevel[y][x]
         if (tileValue !== 0) {
           this.bb[[y, x]] = {
@@ -32,23 +30,24 @@ export class Map {
     }
   }
 
+  hit(row, col) {
+    --this.currentLevel[row][col]
+    if (this.currentLevel[row][col] === 0) {
+      delete this.bb[[row, col]]
+    }
+  }
+
   drawLevel(ctx) {
     ctx.beginPath()
-    for (let y = 0; y < this.levelHeight; ++y) {
-      const levelWidth = this.currentLevel[y].length
-      const tileWidth = c.width / levelWidth
-      for (let x = 0; x < levelWidth; ++x) {
-        const tileValue = this.currentLevel[y][x]
-        if (tileValue !== 0) {
-          ctx.fillStyle = this.chooseColor(this.currentLevel[y][x])
-          ctx.fillRect(x * tileWidth, y * this.tileHeight, tileWidth, this.tileHeight)
-          ctx.strokeStyle = "white"
-          ctx.rect(x * tileWidth, y * this.tileHeight, tileWidth, this.tileHeight)
-          ctx.stroke()
-        }
-      }
+    for (const coords in this.bb) {
+      const bbTile = this.bb[coords]
+      const tileWidth = bbTile.right - bbTile.left
+      ctx.fillStyle = this.chooseColor(this.currentLevel[coords[0]][coords[2]])
+      ctx.fillRect(bbTile.left, bbTile.top, tileWidth, this.tileHeight)
+      ctx.strokeStyle = "white"
+      ctx.rect(bbTile.left, bbTile.top, tileWidth, this.tileHeight)
+      ctx.stroke()
     }
-    ctx.closePath()
   }
 
   chooseColor(tileValue) {
@@ -59,6 +58,12 @@ export class Map {
         return "#007DFF"
       case 3:
         return "#05106E"
+      default:
+        return "black"
     }
+  }
+
+  isClear() {
+    return this.bb.length === 0
   }
 }
