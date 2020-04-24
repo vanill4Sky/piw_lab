@@ -26,7 +26,7 @@
                       <div class="card-body py-2">
                         <h4 class="card-title">Sterowanie</h4>
                         <span class="d-block"><span class="text-success">Strzałki</span> - porusznie paletką</span>
-                        <span class="d-block"><span class="text-success">Spacja</span> - pauza</span>
+                        <span class="d-block"><span class="text-success">Spacja</span> - start/pauza</span>
                       </div>
                       <div class="card-body">
                         <h4 class="card-title">Zasady</h4>
@@ -44,13 +44,24 @@
                   </div>
                 </div>
 
-                <div class="row">
-                  <div class="col">
-                    <button id="saveGame">Save</button>
-                    <button id="loadGame">Load</button>
+                <div class="card my-3 border border-secondary rounded-0">
+                  <div class="card-body">
+                    <h4 class="card-title">Najlepsze wyniki</h4>
+                    <div class="row">
+                      <div class="col">
+                        <ul id="topList" class="list-group">
+                        </ul>
+                      </div>
+                      <div class="col">
+                        <div class="form-group">
+                          <label for="username">Nazwa gracza</label>
+                          <input type="text" class="form-control" id="username">
+                        </div>
+                        <button id="saveScore" class="btn btn-block btn-secondary">Zapisz wynik</button>
+                      </div>
+                    </div>
                   </div>
                 </div>
-
               </div>
             </div>
             <div class="col-md">
@@ -58,6 +69,15 @@
                 <canvas id="gameMapCanvas" class="d-block m-auto border border-secondary" width="500" height="500"
                   style="max-width: 100%; height: auto;"></canvas>
               </div>
+
+                <div class="row my-3 mx-4">
+                  <div class="col">
+                    <button class="btn btn-block btn-secondary" id="saveGame">Zapisz</button>
+                  </div>
+                  <div class="col">
+                    <button class="btn btn-block btn-secondary" id="loadGame">Wczytaj</button>
+                  </div>
+                </div>
             </div>
           </div>
         </div>

@@ -12,6 +12,7 @@ import * as levels from "./modules/levels.js"
 class Game {
   constructor() {
     this.levelsList = document.getElementById("levelsList")
+    this.topList = document.getElementById("topList")
     this.canvas = document.getElementById("gameMapCanvas")
     this.ctx = this.canvas.getContext("2d")
     this.map = new Map()
@@ -23,7 +24,7 @@ class Game {
     this.nextLevelIdx = 0
     this.playerChangeLevel = false
     this.gameover = false
-    this.points = 0
+    this.score = 0
 
     this.keyboardState = {
       ArrowLeft: false,
@@ -43,6 +44,8 @@ class Game {
     })
 
     this.buildLevelsList()
+    this.updateTopList()
+
     this.nextLevel(levels.levelSet)
     this.resetAndPause()
     this.draw()
@@ -108,7 +111,7 @@ class Game {
     if (collisionBallTiles) {
       this.ball.changeDirection(collisionBallTiles.collision)
       this.map.hit(collisionBallTiles.tile.y, collisionBallTiles.tile.x)
-      this.points += 2
+      this.score += 2
     }
 
     // ball and paddle
@@ -126,7 +129,7 @@ class Game {
         this.ball.speed.x = resultatnSpeed - this.ball.speed.y
       } else if (collisionBallPaddle.collision === false) {
         this.resetAndPause()
-        this.points -= 10
+        this.score -= 10
       }
     }
 
@@ -153,7 +156,7 @@ class Game {
     this.ctx.beginPath()
     this.ctx.font = "30px Impact"
     this.ctx.fillStyle = "white"
-    this.ctx.fillText(`Punkty: ${this.points}`, 0, 30)
+    this.ctx.fillText(`Punkty: ${this.score}`, 0, 30)
     this.ctx.closePath()
   }
 
@@ -192,12 +195,45 @@ class Game {
   loadGame(gamesave) {
     // game
     game.nextLevelIdx = gamesave.currentLevelIdx
-    game.points = gamesave.points
+    game.score = gamesave.score
     game.nextLevel(levels.levelSet)
 
     // map
     for (const attr in gamesave.map) {
       game.map[attr] = gamesave.map[attr]
+    }
+  }
+
+  updateTopList(newScore) {
+    this.topList.innerHTML = ""
+    let topList = JSON.parse(localStorage.getItem("arkanoidTop"))
+
+    if (!newScore && !topList) {
+      return
+    }
+
+    if (newScore) {
+      if (topList) {
+        topList.push(newScore)
+      } else {
+        topList = []
+        topList.push(newScore)
+      }
+      topList.sort((a, b) => {
+        return a.score < b.score
+      })
+      localStorage.setItem("arkanoidTop", JSON.stringify(topList))
+    }
+
+    for (let i = 0; i < topList.length; ++i) {
+      const scoreSpan = document.createElement("span")
+      scoreSpan.setAttribute("class", "badge badge-primary badge-pill")
+      scoreSpan.innerText = `${topList[i].score}`
+      const listItem = document.createElement("li")
+      listItem.setAttribute("class", "list-group-item d-flex justify-content-between align-items-center")
+      listItem.innerText = `${topList[i].username}`
+      listItem.appendChild(scoreSpan)
+      this.topList.appendChild(listItem)
     }
   }
 }
@@ -206,6 +242,8 @@ const game = new Game()
 
 const saveButton = document.getElementById("saveGame")
 const loadButton = document.getElementById("loadGame")
+const saveScoreButton = document.getElementById("saveScore")
+const usernameInput = document.getElementById("username")
 
 saveButton.addEventListener("click", () => {
   localStorage.setItem("arkanoidSave", JSON.stringify(game))
@@ -213,7 +251,20 @@ saveButton.addEventListener("click", () => {
 
 loadButton.addEventListener("click", () => {
   const gamesave = JSON.parse(localStorage.getItem("arkanoidSave"))
-  game.loadGame(gamesave)
+  if (gamesave) {
+    game.loadGame(gamesave)
+  }
+})
+
+saveScoreButton.addEventListener("click", () => {
+  let username = "anonim"
+  if (usernameInput.value) {
+    username = usernameInput.value
+  }
+  game.updateTopList({
+    score: game.score,
+    username: username
+  })
 })
 
 var updatesPerFrame = 2

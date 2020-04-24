@@ -32,9 +32,10 @@ export class Collider {
       }
 
       if (collision.x || collision.y) {
+        const coordsSplit = coords.split(",")
         return {
           collision: collision,
-          tile: new Vec2(parseInt(coords[2], 10), parseInt(coords[0], 10))
+          tile: new Vec2(parseInt(coordsSplit[1], 10), parseInt(coordsSplit[0], 10))
         }
       }
     }

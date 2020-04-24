@@ -47,7 +47,8 @@ export class Map {
     for (const coords in this.bb) {
       const bbTile = this.bb[coords]
       const tileWidth = bbTile.right - bbTile.left
-      ctx.fillStyle = this.chooseColor(this.currentLevel[coords[0]][coords[2]])
+      const coordsSplit = coords.split(",")
+      ctx.fillStyle = this.chooseColor(this.currentLevel[coordsSplit[0]][coordsSplit[1]])
       ctx.fillRect(bbTile.left, bbTile.top, tileWidth, this.tileHeight)
       ctx.strokeStyle = "white"
       ctx.rect(bbTile.left, bbTile.top, tileWidth, this.tileHeight)
