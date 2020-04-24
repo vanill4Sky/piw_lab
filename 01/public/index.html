@@ -1,0 +1,130 @@
+<!doctype html>
+
+<html lang="pl">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="author" content="241296">
+    <meta name="description" content="">
+
+    <link rel="icon" href="assets/img/icons/lua-tab-icon.ico">
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.1/build/pure-min.css"
+        integrity="sha384-oAOxQR6DkCoMliIh8yFnu25d7Eq/PHS21PClpwjOTeU2jRSq11vu66rf90/cZr47" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Mitr:400,500" rel="stylesheet">
+</head>
+
+<body>
+    <div id="layout">
+        <div id="menu">
+            <div class="pure-menu">
+                <ol class="pure-menu-list">
+                    <li class="pure-menu-heading pure-menu-selected heading-linked"><a class="pure-menu-link"
+                            href="#">Lua</a></li>
+                    <li class="pure-menu-item"><a class="pure-menu-link" href="#about_lua">O Lua</a></li>
+                    <li class="pure-menu-item"><a class="pure-menu-link" href="#instalation">Instalacja</a></li>
+
+                    <li class="pure-menu-heading menu-item-divided heading-linked"><a class="pure-menu-link"
+                            href="pages/course-beginner.html#">Wprowadzenie</a></li>
+                    <li class="pure-menu-item"><a class="pure-menu-link"
+                            href="pages/course-beginner.html#basics">Podstawowe informacje</a></li>
+                    <li class="pure-menu-item"><a class="pure-menu-link"
+                            href="pages/course-beginner.html#control_flow">Sterowanie przepływem</a></li>
+                    <li class="pure-menu-item"><a class="pure-menu-link"
+                            href="pages/course-beginner.html#functions">Funkcje</a></li>
+                    <li class="pure-menu-item"><a class="pure-menu-link"
+                            href="pages/course-beginner.html#tables">Tablice</a></li>
+
+                    <li class="pure-menu-heading menu-item-divided heading-linked"><a class="pure-menu-link"
+                            href="pages/course-advanced.html#">Zaawansowany Lua</a></li>
+                    <li class="pure-menu-item"><a class="pure-menu-link"
+                            href="pages/course-advanced.html#metatables">Metatablice</a></li>
+                    <li class="pure-menu-item"><a class="pure-menu-link"
+                            href="pages/course-advanced.html#oop">Programowanie obiektowe</a></li>
+                    <li class="pure-menu-item"><a class="pure-menu-link"
+                            href="pages/course-advanced.html#closures">Domknięcia</a></li>
+
+                    <li class="pure-menu-heading menu-item-divided heading-linked"><a class="pure-menu-link"
+                            href="pages/course-cpp.html#">Lua i C++</a></li>
+                    <li class="pure-menu-item"><a class="pure-menu-link" href="pages/course-cpp.html#basics">Podstawowe
+                            informacje</a></li>
+                    <li class="pure-menu-item"><a class="pure-menu-link"
+                            href="pages/course-cpp.html#instalation">Instalacja sol3</a></li>
+                    <li class="pure-menu-item"><a class="pure-menu-link" href="pages/course-cpp.html#overview">Przegląd
+                            funkcji</a></li>
+
+                    <li class="pure-menu-heading menu-item-divided" style="padding-left: 9.9px;">Materiały</li>
+                    <li class="pure-menu-item"><a class="pure-menu-link"
+                            href="https://www.lua.org/manual/5.3/">Dokumentacja Lua</a></li>
+                    <li class="pure-menu-item"><a class="pure-menu-link"
+                            href="https://sol2.readthedocs.io/en/latest/">Dokumentacja sol3</a></li>
+                </ol>
+            </div>
+        </div>
+
+        <div id="main">
+            <div class="header">
+                <h1>Język Lua</h1>
+            </div>
+
+            <div class="content">
+                <h2 class="content-subhead" id="about_lua">O Lua</h2>
+                <div class="pure-g">
+                    <div class="pure-u-2-3">
+                        <p>
+                            Lua jest lekkim, ale efektywnym językiem skryptowym. Może być z powodzeniem wykorzystywany w
+                            profesjonalnych projektach, jako wbudowany język skrytowy zwiększający elastyczność i
+                            upraszacjący modyfikacje aplikacji napisanych w językach kompilowanych. Lua jest bardzo
+                            często wykorzystywana w grach komputerowych. Świetnie nadaje się równierz do nauki
+                            programowania ze względu na dynamiczne typowanie i intuicyjną składnie.
+                        </p>
+                        <p>
+                            Jezyk Lua powstał w Brazyli w 1993 roku, jako wyniki embarga technologicznego nałożonego na
+                            ten kraj. Poprzednikami Lua były SOL (Simple Object Language) oraz DEL (Data-Entry
+                            Language). Pierwotna implementacja powstała bardzo szybko i nawet obecnie nie jest bardzo
+                            skomplikowana. Po skompilowaniu biblioteka zajmuje kilkanaście kilobajtów. Nazwa języka
+                            powstała jako przeciwieństwo do nazwy języka SOL, gdyż "sol" to po portugalsku Słońce, a
+                            "lua" to Księżyc. Z tego powodu logo języka to Księżyc z wyraźnie zaznaczoną orbitą
+                            okrążający Ziemię.
+                        </p>
+                    </div>
+                    <div class="pure-u-1-3">
+                        <img class="pure-img-responsive pure" src="assets/img/pictures/lua-logo-fullsize.png" al="logo">
+                    </div>
+                </div>
+
+                <h2 class="content-subhead" id="instalation">Instalacja</h2>
+                <p>
+                    Do wyboru mamy wiele implementacji języka. Wzorcową jest ta stworzona przez twórców w języku C. Inne
+                    implementacje to np. LuaJIT, która korzysta z zalet kompilacji do kodu maszynowyge przed wykonaniem
+                    fragmentu kodu w celu przyspieszenia skryptów. Jednak to główna implementacja jest najlepiej
+                    przetestowana i wciąż wspierana przez twórców, dlatego jest najlepszym wyborem, przynajmniej do
+                    celów tego kursu.
+                </p>
+                <p>
+                    Implementacje wzorcową można przetestować na stronie <a
+                        href="https://www.lua.org/demo.html">https://www.lua.org/demo.html</a>.
+                </p>
+                <h3 class="content-subhead">Windows</h3>
+                <p>
+                    Instalator w wersji 32-bitowej może zostac pobrany z: <a
+                        href="https://github.com/LuaDist/Binaries/archive/LuaDist-batteries-0.9.8-Windows-x86.zip">instalator.</a>
+                    Kompilacja i instalacja interpretera, który może zostać wykorzystany z poziomu języka C++ zostanie
+                    omówiona w dalszej części kursu.
+                </p>
+                <h3 class="content-subhead">Linux (Ubuntu)</h3>
+                <p>
+                    Najprostsza metoda to skorzystanie z menadżera pakietów apt. Należy otworzyć terminal i wpsiać
+                    polecenie
+                    <pre>sudo apt-get install lua50</pre>
+                </p>
+
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

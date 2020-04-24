@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="pl">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="author" content="241296">
+  <meta name="description" content="">
+
+  <link rel="stylesheet" href="../../css/bootstrap.css">
+  <link href="https://fonts.googleapis.com/css?family=Mitr:400,500" rel="stylesheet">
+</head>
+
+<body>
+  <div class="p-4 m-4">
+    <h2>Edytor graficzny</h1>
+
+      <div id="canvasWrapper" style="margin: 0 auto; width: 600px; height: 500px;">
+        <div id="menu" class="px-3">
+          <div class="container">
+            <div class="row">
+              <input id="colorPicker" type="color" class="form-control" value="#ff0000">
+            </div>
+            <div id="shapeSelector">
+              <div class="row mt-5">
+                <button value="rectOutline" class="btn btn-secondary border border-primary btn-block active">
+                  <h5 class="m-0">▯</h5>
+                </button>
+              </div>
+              <div class="row my-1">
+                <button value="rect" class="btn btn-secondary border border-primary btn-block">
+                  <h5 class="m-0">▮</h5>
+                </button>
+              </div>
+              <div class="row my-1">
+                <button value="circleOutline" class="btn btn-secondary border border-primary btn-block">
+                  <h5 class="m-0">○</h5>
+                </button>
+              </div>
+              <div class="row my-1">
+                <button value="circle" class="btn btn-secondary border border-primary btn-block">
+                  <h5 class="m-0">●</h5>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <canvas id="canvas" class="border border-secondary" style="z-index: 1; display: block;"></canvas>
+        <canvas id="canvasTemp" class="border border-secondary" style="z-index: 2; display: block;"></canvas>
+      </div>
+  </div>
+</body>
+
+<script type="module" src="main.js"></script>
+<script src="../../js/live.js"></script>
+
+</html>
