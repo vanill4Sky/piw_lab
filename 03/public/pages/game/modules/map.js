@@ -6,10 +6,15 @@ export class Map {
   }
 
   loadLevel(level) {
+    delete this.bb
+    this.bb = {}
     this.cols = level.map((row) => row.length)
     this.levelHeight = level.length
     this.tileHeight = c.width / Math.max(...this.cols)
-    this.currentLevel = level
+    this.currentLevel = []
+    for (let y = 0; y < this.levelHeight; ++y) {
+      this.currentLevel[y] = level[y].slice()
+    }
     this.calcBoundingBoxes()
   }
 
@@ -64,6 +69,6 @@ export class Map {
   }
 
   isClear() {
-    return this.bb.length === 0
+    return Object.keys(this.bb).length === 0
   }
 }

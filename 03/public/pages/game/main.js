@@ -11,6 +11,7 @@ import * as levels from "./modules/levels.js"
 
 class Game {
   constructor() {
+    this.levelsList = document.getElementById("levelsList")
     this.canvas = document.getElementById("gameMapCanvas")
     this.ctx = this.canvas.getContext("2d")
     this.map = new Map()
@@ -19,6 +20,9 @@ class Game {
     this.collider = new Collider()
     this.ballPaused = true
     this.currentLevelIdx = 0
+    this.nextLevelIdx = 0
+    this.playerChangeLevel = false
+    this.gameover = false
 
     this.keyboardState = {
       ArrowLeft: false,
@@ -37,15 +41,34 @@ class Game {
       this.keyboardState[e.key] = false
     })
 
+    this.buildLevelsList()
     this.nextLevel(levels.levelSet)
     this.resetAndPause()
     this.draw()
   }
 
+  buildLevelsList() {
+    for (let i = 0; i < levels.levelSet.length; ++i) {
+      const listItem = document.createElement("li")
+      listItem.setAttribute("class", "list-group-item list-group-item-action")
+      // listItem.setAttribute("class", "list-group-item list-group-item-action disabled")
+      listItem.setAttribute("id", `level${i}`)
+      const thisGame = this
+      listItem.addEventListener("click", () => {
+        thisGame.nextLevelIdx = i
+        thisGame.playerChangeLevel = true
+      })
+      listItem.innerText = `Poziom ${i}`
+      this.levelsList.appendChild(listItem)
+    }
+  }
+
   mainLoop(dt) {
     this.handleInput()
-    this.update(dt)
-    this.draw()
+    if (!this.gameover) {
+      this.update(dt)
+      this.draw()
+    }
   }
 
   handleInput() {
@@ -110,8 +133,13 @@ class Game {
     }
     this.paddle.move(dt)
 
-    if (this.map.isClear) {
-      this.nextLevel(levels.levelSet)
+    if (this.playerChangeLevel) {
+      this.gameover = this.nextLevel(levels.levelSet)
+      this.playerChangeLevel = false
+    }
+
+    if (this.map.isClear()) {
+      this.gameover = this.nextLevel(levels.levelSet)
     }
   }
 
@@ -122,6 +150,10 @@ class Game {
     this.paddle.draw(this.ctx)
   }
 
+  drawGameover() {
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
+  }
+
   resetAndPause() {
     this.ballPaused = true
 
@@ -129,14 +161,23 @@ class Game {
     this.ball.pos.x = this.paddle.pos.x + this.paddle.size.x / 2
     this.ball.pos.y = this.paddle.pos.y - this.ball.size * 2
     this.ball.dir = new Vec2(-1, -1)
-    this.ball.speed = new Vec2(resultatnSpeed / 2, resultatnSpeed / 2)
+    this.ball.speed = new Vec2(0, resultatnSpeed)
   }
 
   nextLevel(levelSet) {
-    if (levelSet[this.currentLevelIdx]) {
+    if (levelSet[this.nextLevelIdx]) {
       this.resetAndPause()
-      this.map.loadLevel(levelSet[this.currentLevelIdx])
-      ++this.currentLevelIdx
+      this.map.loadLevel(levelSet[this.nextLevelIdx])
+
+      const listItemPrev = document.getElementById(`level${this.currentLevelIdx}`)
+      listItemPrev.classList.remove("active")
+
+      const listItem = document.getElementById(`level${this.nextLevelIdx}`)
+      listItem.classList.remove("disabled")
+      listItem.classList.add("active")
+
+      this.currentLevelIdx = this.nextLevelIdx
+      ++this.nextLevelIdx
       return true
     }
     return false

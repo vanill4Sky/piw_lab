@@ -13,12 +13,44 @@
 
 <body>
   <div class="p-4 m-4">
-    <h2>Gra</h1>
+    <h2>Gra "Arkanoid"</h1>
 
       <div class="jumbotron py-4">
-        <div id="canvasWrapper">
-          <canvas id="gameMapCanvas" class="d-block m-auto border border-secondary" width="500" height="500"
-            style="max-width: 100%; height: auto;"></canvas>
+        <div class="container">
+          <div class="row">
+            <div class="col-md">
+              <div class="container">
+                <div class="row">
+                  <div class="col">
+                    <div class="card mb-3 border border-secondary rounded-0">
+                      <div class="card-body py-2">
+                        <h4 class="card-title">Sterowanie</h4>
+                        <span class="d-block"><span class="text-success">Strzałki</span> - porusznie paletką</span>
+                        <span class="d-block"><span class="text-success">Spacja</span> - pauza</span>
+                      </div>
+                      <div class="card-body">
+                        <h4 class="card-title">Zasady</h4>
+                        <p class="card-text">Każde trafienie dodaje 2 punkty, a utrata piłki odejmuje 10.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <ul id="levelsList" class="list-group">
+                      <!-- Element tworzony z poziomu JS -->
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md">
+              <div id="canvasWrapper">
+                <canvas id="gameMapCanvas" class="d-block m-auto border border-secondary" width="500" height="500"
+                  style="max-width: 100%; height: auto;"></canvas>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
   </div>
