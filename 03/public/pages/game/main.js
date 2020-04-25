@@ -66,14 +66,6 @@ class Game {
     }
   }
 
-  mainLoop(dt) {
-    this.handleInput()
-    if (!this.gameover) {
-      this.update(dt)
-      this.draw()
-    }
-  }
-
   handleInput() {
     if (this.keyboardState.ArrowLeft) {
       this.paddle.changeDirection(-1)
@@ -160,10 +152,6 @@ class Game {
     this.ctx.closePath()
   }
 
-  drawGameover() {
-    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
-  }
-
   resetAndPause() {
     this.ballPaused = true
 
@@ -187,9 +175,9 @@ class Game {
 
       this.currentLevelIdx = this.nextLevelIdx
       ++this.nextLevelIdx
-      return true
+      return false
     }
-    return false
+    return true
   }
 
   loadGame(gamesave) {
@@ -274,7 +262,12 @@ window.setInterval(() => {
     game.draw()
     updatesCounter = 0
   }
+  if (game.gameover) {
+    game.nextLevelIdx = 0
+    game.gameover = game.nextLevel(levels.levelSet)
+  }
   game.handleInput()
   game.update(1 / updatesPerFrame)
+
   updatesCounter++
 }, 16 / updatesPerFrame)
