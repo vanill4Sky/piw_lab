@@ -139,7 +139,6 @@ function getMousePosition(canvas, event) {
 function init() {
   const paint = new Paint()
   paint.resizeCanvas()
-  // window.addEventListener("resize", paint.resizeCanvas, false)
 }
 
 window.addEventListener("load", init)
