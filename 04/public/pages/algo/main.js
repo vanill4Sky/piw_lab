@@ -1,3 +1,10 @@
+import { Table } from "./modules/table.js"
+
+const minAbsSumWorker = new Worker("./min-abs-sum-worker.js")
+const tableSameValuesCount = new Table("tableSameValuesCount", ["Wartość", "Liczba powtórzeń"])
+const progressbarSolution = document.getElementById("progressbarSolution")
+const minAbsSumResult = document.getElementById("minAbsSumResult")
+
 function findProblemNumber() {
   const studnetIndexValue = parseInt(document.getElementById("studentIndex").innerText)
   const problemNumberValue = studnetIndexValue % 5
@@ -24,16 +31,39 @@ function findProblemNumber() {
   }
 }
 
+function initWorker() {
+  minAbsSumWorker.onmessage = (e) => {
+    const data = e.data
+    if (data.sameValuesCount) {
+      tableSameValuesCount.clearBody()
+      data.sameValuesCount.forEach((value, index) => {
+        if (value > 0) {
+          tableSameValuesCount.insertRow([index, value])
+        }
+      })
+    } else if (data.maxSum !== undefined) {
+    } else if (data.progress) {
+      progressbarSolution.style.width = data.progress
+    } else if (data.result !== undefined) {
+      minAbsSumResult.innerText = data.result
+    }
+  }
+}
+
 function initProblemParametersSection() {
   const formProblemParameters = document.getElementById("formProblemParameters")
   formProblemParameters.addEventListener("submit", (e) => {
     e.preventDefault()
+    const inputProblemSize = document.getElementById("inputProblemSize")
+    progressbarSolution.style.width = "0%"
+    minAbsSumWorker.postMessage({ problemSize: inputProblemSize.value })
   })
 }
 
 function initPage() {
   findProblemNumber()
   initProblemParametersSection()
+  initWorker()
 }
 
 window.addEventListener("load", () => {
