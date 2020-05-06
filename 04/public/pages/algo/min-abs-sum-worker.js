@@ -37,8 +37,9 @@ class MinAbsSum {
     postMessage({ sameValuesCount: sameValuesCount })
 
     const maxSum = sameValuesCount.reduce((previousValue, currentValue, currentIndex) => {
+      console.log(previousValue, currentValue, currentIndex)
       return previousValue + currentValue * currentIndex
-    })
+    }, 0)
 
     postMessage({ maxSum: maxSum })
 
@@ -48,26 +49,27 @@ class MinAbsSum {
 
     sameValuesCount.forEach((countValue, countIndex) => {
       if (countValue > 0) {
-        for (let i = 0; i < maxSum; ++i) {
-          if (dp[i] >= 0) {
-            dp[i] = countValue
-          } else if (i >= countIndex && dp[i - countIndex] > 0) {
-            dp[i] = dp[i - countIndex] - 1
+        dp.forEach((dpValue, dpIndex, dpArray) => {
+          if (dpValue >= 0) {
+            dpArray[dpIndex] = countValue
+          } else if (dpIndex >= countIndex && dpArray[dpIndex - countIndex] > 0) {
+            dpArray[dpIndex] = dpArray[dpIndex - countIndex] - 1
           }
-        }
+        })
       }
       const currentProgress = Math.ceil(countIndex / sameValuesCount.length * 100) + "%"
       postMessage({ progress: currentProgress })
     })
 
-    let result = maxSum
-    for (let i = 0; i < Math.floor(maxSum / 2) + 1; ++i) {
+    let minSum = maxSum
+    for (let i = Math.floor(maxSum / 2); i >= 0; --i) {
       if (dp[i] >= 0) {
-        result = Math.min(result, maxSum - 2 * i)
+        minSum = Math.min(minSum, maxSum - 2 * i)
+        break
       }
     }
 
-    return result
+    return minSum
   }
 }
 

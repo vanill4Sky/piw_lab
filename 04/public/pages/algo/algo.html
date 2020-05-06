@@ -18,20 +18,20 @@
       <div class="container m-auto">
         <div class="row">
 
-          <div class="col-md">
-            <div class="card border-secondary mb-3">
+          <div class="col-md mb-3">
+            <div class="card border-secondary" style="height: 100%;">
               <div class="card-header">Problem</div>
               <div class="card-body">
                 <p class="card-text">Numer indeksu: <span id="studentIndex">241296</span></p>
                 <p class="card-text">Numer zadania: <span id="problemNumber"></span></p>
                 <p><a id="linkToProblemDescription">Treść zadania</a></p>
-                <a href="">Wyniki testu na stronie codility</a>
+                <a href="https://app.codility.com/demo/results/trainingF2Q27P-3V8/">Wyniki testu na stronie codility</a>
               </div>
             </div>
           </div>
 
-          <div class="col-md">
-            <div class="card border-secondary mb-3">
+          <div class="col-md mb-3">
+            <div class="card border-secondary">
               <div class="card-header">Parametry problemu</div>
               <div class="card-body">
                 <form id="formProblemParameters">
@@ -54,8 +54,8 @@
         </div>
 
         <div class="row">
-          <div class="col-md">
-            <div class="card border-secondary mb-3" style="max-height: 20em;">
+          <div class="col-md mb-3">
+            <div class="card border-secondary" style="max-height: 20em; min-height: 100%;">
               <div class="card-header">Liczba powtórzeń wartości bezwględnych</div>
               <div class="card-body overflow-auto">
                 <table id="tableSameValuesCount" class="table table-hover">
@@ -64,14 +64,17 @@
             </div>
           </div>
 
-          <div class="col-md">
-            <div class="card border-secondary mb-3">
+          <div class="col-md mb-3">
+            <div class="card border-secondary" style="height: 100%;">
               <div class="card-header">Rozwiązanie</div>
               <div class="card-body">
                 <span class="text-muted">Postęp</span>
                 <div class="progress">
                   <div id="progressbarSolution" class="progress-bar" role="progressbar" style="width: 0%;"></div>
                 </div>
+                <p class="card-text mt-3 text-muted">
+                  Największa znaleziona suma: <span id="maxAbsSumResult"></span>
+                </p>
                 <p class="card-text mt-3">
                   Najmniejsza znaleziona suma: <span id="minAbsSumResult" class="text-success"></span>
                 </p>
