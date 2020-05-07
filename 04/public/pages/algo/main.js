@@ -18,7 +18,7 @@ class Controller {
   }
 
   findProblemNumber() {
-    const studnetIndexValue = parseInt(document.getElementById("studentIndex").innerText)
+    const studnetIndexValue = parseInt(document.getElementById("studentIndex").innerText, 10)
     const problemNumberValue = studnetIndexValue % 5
     const problemNumber = document.getElementById("problemNumber")
     problemNumber.innerText = problemNumberValue

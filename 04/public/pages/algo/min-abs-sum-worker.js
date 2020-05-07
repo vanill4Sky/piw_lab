@@ -2,7 +2,7 @@ self.onmessage = (e) => {
   const data = e.data
 
   if (data.problemSize) {
-    const minAbsSum = new MinAbsSum(parseInt(data.problemSize))
+    const minAbsSum = new MinAbsSum(parseInt(data.problemSize, 10))
     const result = minAbsSum.solve()
     postMessage({ result: result })
   }
@@ -37,7 +37,6 @@ class MinAbsSum {
     postMessage({ sameValuesCount: sameValuesCount })
 
     const maxSum = sameValuesCount.reduce((previousValue, currentValue, currentIndex) => {
-      console.log(previousValue, currentValue, currentIndex)
       return previousValue + currentValue * currentIndex
     }, 0)
 
@@ -68,6 +67,8 @@ class MinAbsSum {
         break
       }
     }
+
+    postMessage({ progress: "100%" })
 
     return minSum
   }

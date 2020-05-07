@@ -15,78 +15,105 @@
   <div>
     <h2 class="m-4">Symulacja punktu obsługi</h1>
 
-    <div class="container m-auto">
-      <div class="row">
+      <div class="container m-auto">
+        <div class="row">
 
-        <div class="col-sm-4">
-          <div class="card text-white bg-success mb-3">
-            <div class="card-header">Urzędnik A</div>
-            <div class="card-body">
-              <p class="card-text">Wolny</p>
+          <div class="col-sm-4">
+            <div id="divClerkA" class="mb-3"></div>
+          </div>
+
+          <div class="col-sm-4">
+            <div id="divClerkB" class="mb-3"></div>
+          </div>
+
+          <div class="col-sm-4">
+            <div id="divClerkC" class="mb-3"></div>
+          </div>
+
+        </div>
+
+        <div class="row">
+          <div class="col-sm-4">
+            <div class="card mb-3">
+              <div class="card-header">Kolejka</div>
+              <!-- this list is being populated in JS -->
+              <ul id="listQueue" class="list-group list-group-flush"></ul>
+            </div>
+          </div>
+
+          <div class="col-sm-4">
+            <div class="card mb-3">
+              <div class="card-header">Podsumowanie</div>
+              <div class="mx-2">
+                <table class="table table-hover mb-0">
+                  <tbody>
+                    <tr>
+                      <th scope="row">Obsłużonych</th>
+                      <td id="servedCount" class="text-right">0</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">Odrzuconych</th>
+                      <td id="rejectedCount" class="text-right">0</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-4">
+            <div class="card mb-3">
+              <div class="card-header">Ustawienia</div>
+              <div class="card-body">
+                <form id="formSimulationParameters">
+                  <h5 class="card-title">Parametry czasu załatwiania sprawy przez klienta</h5>
+                  <div class="form-group row">
+                    <label for="minDuration" class="col-lg-7 col-form-label">Minimalny czas [ms]</label>
+                    <div class="col-lg-5">
+                      <input type="number" class="form-control" id="minDuration" min="1" max="20000" value="100"
+                        required>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="maxDuration" class="col-lg-7 col-form-label">Maksymalny czas [ms]</label>
+                    <div class="col-lg-5">
+                      <input type="number" class="form-control" id="maxDuration" min="1" max="20000" value="1000"
+                        required>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="skew" class="col-lg-7 col-form-label">Skośność rozkładu</label>
+                    <div class="col-lg-5">
+                      <input type="number" class="form-control" id="skew" min="0.0" max="100.0" value="1.0" step="0.01"
+                        required>
+                    </div>
+                  </div>
+
+                  <h5 class="card-title">Parametry czasu pomiędzy kolejnymi klientami</h5>
+                  <div class="form-group row">
+                    <label for="clientsRate" class="col-lg-7 col-form-label">Średnia liczba klientów na minutę</label>
+                    <div class="col-lg-5">
+                      <input type="number" class="form-control" id="clientsRate" min="1" max="100" value="10"
+                        required>
+                    </div>
+                  </div>
+
+                  <h5 class="card-title">Parametry kolejki</h5>
+                  <div class="form-group row">
+                    <label for="maxQueueSize" class="col-lg-7 col-form-label">Maksymalna długośc kolejki</label>
+                    <div class="col-lg-5">
+                      <input type="number" class="form-control" id="maxQueueSize" min="1" max="100" value="10"
+                        required>
+                    </div>
+                  </div>
+
+                  <button id="buttonStartSimulation" type="submit" class="btn btn-primary btn-block ">Uruchom symulację</button>
+                </form>
+              </div>
             </div>
           </div>
         </div>
-
-        <div class="col-sm-4">
-          <div class="card text-white bg-success mb-3">
-            <div class="card-header">Urzędnik B</div>
-            <div class="card-body">
-              <p class="card-text">Wolny</p>
-            </div>
-          </div>
-        </div>
-        
-        <div class="col-sm-4">
-          <div class="card text-white bg-success mb-3">
-            <div class="card-header">Urzędnik C</div>
-            <div class="card-body">
-              <p class="card-text">Wolny</p>
-            </div>
-          </div>
-        </div>
-
       </div>
-
-      <div class="row">
-        <div class="col-sm-4">
-          <div class="card mb-3">
-            <div class="card-header">Kolejka</div>
-            <ul class="list-group list-group-flush">
-              <li class="list-group-item d-flex justify-content-between align-items-center">
-                Klienta 1
-                <span class="badge badge-primary badge-pill">14 ms</span>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="col-sm-4">
-          <div class="card mb-3">
-            <div class="card-header">Podsumowanie</div>
-            <div class="mx-2">
-              <table class="table table-hover mb-0">
-                <tbody>
-                  <tr>
-                    <th scope="row">Obsłużonych</th>
-                    <td class="text-right">0</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">Odrzuconych</th>
-                    <td class="text-right">0</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-sm-4">
-          <div class="card mb-3">
-            <div class="card-header">Ustawienia</div>
-          </div>
-        </div>
-      </div>
-    </div>
 
   </div>
 </body>
