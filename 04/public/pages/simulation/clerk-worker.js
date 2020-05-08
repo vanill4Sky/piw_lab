@@ -1,24 +1,24 @@
 let queuePort
 let id = -1
 let currentClient = false
-let waitingForResponse = false
+
+function requestClient() {
+  queuePort.postMessage({
+    command: "clientRequest",
+    id: id
+  })
+}
+
+function requestStatusChange() {
+  queuePort.postMessage({
+    command: "changeStatus",
+    id: id
+  })
+}
 
 function onMessageFromQueue(e) {
   const data = e.data
-
   switch (data.command) {
-    case "enqueued":
-      if (!currentClient && !waitingForResponse) {
-        queuePort.postMessage({
-          command: "clientRequest",
-          id: id
-        })
-        waitingForResponse = true
-      }
-      break
-    case "requestRejected":
-      waitingForResponse = false
-      break
     case "dequeued":
       console.log(id, currentClient)
       currentClient = data.client
@@ -32,10 +32,8 @@ function onMessageFromQueue(e) {
           command: "update",
           currentClient: false
         })
-        queuePort.postMessage({
-          command: "clientRequestFirst",
-          id: id
-        })
+        requestStatusChange()
+        requestClient()
       }, parseInt(currentClient.serviceDuration, 10))
       break
     default:
@@ -55,7 +53,6 @@ self.onmessage = (e) => {
     case "config":
       id = parseInt(data.id, 10)
       currentClient = false
-      waitingForResponse = false
       break
     default:
       console.log(data)
