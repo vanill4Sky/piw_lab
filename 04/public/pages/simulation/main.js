@@ -1,6 +1,5 @@
 import { ClerkView } from "./modules/clerk-view.js"
 import { QueueView } from "./modules/queue-view.js"
-import { ClientModel } from "./modules/client-model.js"
 
 class Controller {
   constructor() {
@@ -12,17 +11,17 @@ class Controller {
     this.queueView = new QueueView("listQueue")
 
     this.clientsInput = new MessageChannel()
-    this.clientOutputs = [
-      new MessageChannel(), new MessageChannel(), new MessageChannel()
-    ]
+    this.clientOutputs = new Array(this.clerkViews.length)
+    for (let i = 0; i < this.clientOutputs.length; ++i) {
+      this.clientOutputs[i] = new MessageChannel()
+    }
 
     this.clientsGeneratorWorker = new Worker("./clients-generator-worker.js")
     this.queueWorker = new Worker("./queue-worker.js")
-    this.clerkWorkers = [
-      new Worker("./clerk-worker.js"),
-      new Worker("./clerk-worker.js"),
-      new Worker("./clerk-worker.js")
-    ]
+    this.clerkWorkers = new Array(this.clerkViews.length)
+    for (let i = 0; i < this.clerkWorkers.length; ++i) {
+      this.clerkWorkers[i] = new Worker("./clerk-worker.js")
+    }
 
     this.initView()
     this.initWorkers()
@@ -150,6 +149,11 @@ class Controller {
 
   resetView() {
     this.queueView.clear()
+    document.getElementById("servedCount").innerText = "0"
+    document.getElementById("rejectedCount").innerText = "0"
+    this.clerkViews.forEach((value) => {
+      value.setBusy(false)
+    })
   }
 }
 

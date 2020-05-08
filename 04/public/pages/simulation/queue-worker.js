@@ -36,7 +36,7 @@ function onMessageFromClientsGenerator(e) {
 
 function onMessageFromClerks(e) {
   const data = e.data
-  
+
   switch (data.command) {
     case "clientRequest":
       if (queueModel.length > 0) {

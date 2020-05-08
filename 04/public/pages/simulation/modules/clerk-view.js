@@ -4,13 +4,17 @@ export class ClerkView {
     this.clerkName = clerkName
     this.cardElement = document.createElement("div")
     this.currentClientNameElement = document.createElement("p")
+    this.currentSerivceDurationElement = document.createElement("span")
 
     this.initView()
   }
 
   initView() {
-    this.currentClientNameElement.className = "card-text"
+    this.currentSerivceDurationElement.className = "badge badge-secondary badge-pill d-none"
+
+    this.currentClientNameElement.className = "card-text d-flex justify-content-between align-items-center"
     this.currentClientNameElement.innerText = "Wolny"
+    this.currentClientNameElement.appendChild(this.currentSerivceDurationElement)
 
     const cardBodyElement = document.createElement("div")
     cardBodyElement.className = "card-body"
@@ -32,9 +36,13 @@ export class ClerkView {
       this.cardElement.classList.remove("bg-success")
       this.cardElement.classList.add("bg-danger")
       this.currentClientNameElement.innerText = clientModel.clientName
+      this.currentSerivceDurationElement.innerText = clientModel.serviceDuration
+      this.currentSerivceDurationElement.classList.remove("d-none")
+      this.currentClientNameElement.appendChild(this.currentSerivceDurationElement)
     } else {
       this.cardElement.classList.remove("bg-danger")
       this.cardElement.classList.add("bg-success")
+      this.currentSerivceDurationElement.classList.add("d-none")
       this.currentClientNameElement.innerText = "Wolny"
     }
   }

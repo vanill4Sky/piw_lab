@@ -20,7 +20,6 @@ function onMessageFromQueue(e) {
   const data = e.data
   switch (data.command) {
     case "dequeued":
-      console.log(id, currentClient)
       currentClient = data.client
       self.postMessage({
         command: "update",
