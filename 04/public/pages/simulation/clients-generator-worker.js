@@ -58,6 +58,7 @@ self.onmessage = (e) => {
       max = parseInt(data.max, 10) || 1
       skew = parseFloat(data.skew) || 1.0
       rate = parseInt(data.rate, 10) || 1
+      clientsCounter = 0
       setTimeout(generatorLoop, randomExponentialDist(rate))
       break
   }

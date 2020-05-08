@@ -18,7 +18,6 @@ export class QueueView {
   }
 
   popFront() {
-    console.log(this.listElement.firstChild)
     this.listElement.removeChild(this.listElement.firstChild)
   }
 
