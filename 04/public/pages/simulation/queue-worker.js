@@ -36,7 +36,7 @@ function onMessageFromClientsGenerator(e) {
 
 function onMessageFromClerks(e) {
   const data = e.data
-
+  
   switch (data.command) {
     case "clientRequest":
       if (queueModel.length > 0) {
@@ -61,17 +61,14 @@ self.onmessage = (e) => {
       clientsGeneratorPort.onmessage = onMessageFromClientsGenerator
       break
     case "connectClerks":
-      clerksPort = new Array(e.ports.length)
-      for (let i = 0; i < e.ports.length; ++i) {
-        clerksPort[i] = e.ports[i]
-        clerksPort[i].onmessage = onMessageFromClerks
-      }
-      clerksStatus = new Array(e.ports.length)
-      clerksStatus.fill(true)
+      clerksPort.push(e.ports[0])
+      clerksPort[clerksPort.length - 1].onmessage = onMessageFromClerks
       break
     case "config":
       queueModel = []
       maxQueueSize = parseInt(data.maxQueueSize, 10) || 0
+      clerksStatus = new Array(clerksPort.length)
+      clerksStatus.fill(true)
       break
   }
 }

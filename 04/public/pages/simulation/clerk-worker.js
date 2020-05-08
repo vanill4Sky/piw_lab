@@ -37,7 +37,7 @@ function onMessageFromQueue(e) {
       }, parseInt(currentClient.serviceDuration, 10))
       break
     default:
-      console.log(data)
+      console.log(`clerk ${id}: message from queue: ${data}`)
       break
   }
 }

@@ -37,9 +37,11 @@ class Controller {
       command: "connectClientsGenerator"
     }, [this.clientsInput.port2])
 
-    this.queueWorker.postMessage({
-      command: "connectClerks"
-    }, [...this.clientOutputs.map((value) => value.port1)])
+    this.clientOutputs.forEach((value) => {
+      this.queueWorker.postMessage({
+        command: "connectClerks"
+      }, [value.port1])
+    })
 
     this.clerkWorkers.forEach((value, index) => {
       value.postMessage({
