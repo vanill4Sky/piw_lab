@@ -9,17 +9,32 @@ class Controller {
     this.clerkViewC = new ClerkView("divClerkC", "Urzędnik C")
     this.queueView = new QueueView("listQueue")
 
+    this.clientsInput = new MessageChannel()
+
     this.clientsGeneratorWorker = new Worker("./clients-generator-worker.js")
+    this.queueWorker = new Worker("./queue-worker.js")
 
     this.initView()
     this.initWorkers()
   }
 
   initWorkers() {
-    this.clientsGeneratorWorker.onmessage = (e) => {
+    this.clientsGeneratorWorker.postMessage({
+      command: "connect"
+    }, [this.clientsInput.port1])
+
+    this.queueWorker.postMessage({
+      command: "connect"
+    }, [this.clientsInput.port2])
+
+    this.queueWorker.onmessage = (e) => {
       const data = e.data
 
-      this.queueView.pushBack(data)
+      if (data.enqueued) {
+        this.queueView.pushBack(data.enqueued)
+      } else if (data.rejected) {
+        this.incRejectedCount()
+      }
     }
   }
 
@@ -50,12 +65,18 @@ class Controller {
 
     formSimulationParameters.onsubmit = (e) => {
       e.preventDefault()
+
       this.clientsGeneratorWorker.postMessage({
+        command: "config",
         min: formSimulationParameters.minDuration.value,
         max: formSimulationParameters.maxDuration.value,
         skew: formSimulationParameters.skew.value,
-        rate: formSimulationParameters.clientsRate.value,
-        start: true
+        rate: formSimulationParameters.clientsRate.value
+      })
+
+      this.queueWorker.postMessage({
+        command: "config",
+        maxQueueSize: formSimulationParameters.maxQueueSize.value
       })
     }
   }

@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 self.importScripts("./client-model.js")
 
 // https://stackoverflow.com/questions/25582882/javascript-math-random-normal-distribution-gaussian-bell-curve
@@ -28,6 +29,7 @@ function randomExponentialDist(rate) {
   return -Math.log(Math.random()) / rate * 60000
 }
 
+let queuePort
 let clientsCounter = 0
 let min = 1
 let max = 1
@@ -35,7 +37,10 @@ let skew = 1
 let rate = 1
 
 function generatorLoop() {
-  postMessage(new ClientModel("Klient_" + clientsCounter, Math.floor(randomNormalDist(min, max, skew))))
+  queuePort.postMessage({
+    command: "enqueue",
+    client: new ClientModel("Klient_" + clientsCounter, Math.floor(randomNormalDist(min, max, skew)))
+  })
   ++clientsCounter
 
   setTimeout(generatorLoop, randomExponentialDist(rate))
@@ -43,20 +48,17 @@ function generatorLoop() {
 
 self.onmessage = (e) => {
   const data = e.data
-  if (data.min !== undefined) {
-    min = parseInt(data.min, 10)
-  }
-  if (data.max !== undefined) {
-    max = parseInt(data.max, 10)
-  }
-  if (data.skew !== undefined) {
-    skew = parseFloat(data.skew)
-  }
-  if (data.rate !== undefined) {
-    rate = parseInt(data.rate, 10)
-  }
 
-  if (data.start) {
-    setTimeout(generatorLoop, randomExponentialDist(rate))
+  switch (data.command) {
+    case "connect":
+      queuePort = e.ports[0]
+      break
+    case "config":
+      min = parseInt(data.min, 10) || 1
+      max = parseInt(data.max, 10) || 1
+      skew = parseFloat(data.skew) || 1.0
+      rate = parseInt(data.rate, 10) || 1
+      setTimeout(generatorLoop, randomExponentialDist(rate))
+      break
   }
 }
