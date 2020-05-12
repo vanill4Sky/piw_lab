@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="pl">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="author" content="241296">
+  <meta name="description" content="">
+
+  <link rel="stylesheet" href="../../css/bootstrap.css">
+  <link href="https://fonts.googleapis.com/css?family=Mitr:400,500" rel="stylesheet">
+</head>
+
+<body>
+  <div>
+    <h2 class="m-4">Złożone algorytmy</h1>
+
+      <div class="container m-auto">
+        <div class="row">
+
+          <div class="col-md mb-3">
+            <div class="card border-secondary" style="height: 100%;">
+              <div class="card-header">Problem</div>
+              <div class="card-body">
+                <p class="card-text">Numer indeksu: <span id="studentIndex">241296</span></p>
+                <p class="card-text">Numer zadania: <span id="problemNumber"></span></p>
+                <p><a id="linkToProblemDescription">Treść zadania</a></p>
+                <a href="https://app.codility.com/demo/results/trainingF2Q27P-3V8/">Wyniki testu na stronie codility</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md mb-3">
+            <div class="card border-secondary">
+              <div class="card-header">Parametry problemu</div>
+              <div class="card-body">
+                <form id="formProblemParameters">
+                  <fieldset>
+                    <div class="form-group">
+                      <label for="inputProblemSize">Rozmiar problemu</label>
+                      <input type="number" class="form-control" id="inputProblemSize" min="0" max="20000" value="10000"
+                        required>
+                      <small class="form-text text-muted">Rozmiar problemu w przedziale [0, 20000]</small>
+                    </div>
+                    <p class="card-text">Wartości komórek w tablicy mieszczą się w przedziale [-100, 100].</p>
+                    <button id="buttonFindSolution" type="submit" class="btn btn-primary btn-block ">Znajdź
+                      rozwiązanie</button>
+                  </fieldset>
+                </form>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="row">
+          <div class="col-md mb-3">
+            <div class="card border-secondary" style="max-height: 20em; min-height: 100%;">
+              <div class="card-header">Liczba powtórzeń wartości bezwględnych</div>
+              <div class="card-body overflow-auto">
+                <table id="tableSameValuesCount" class="table table-hover">
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md mb-3">
+            <div class="card border-secondary" style="height: 100%;">
+              <div class="card-header">Rozwiązanie</div>
+              <div class="card-body">
+                <span class="text-muted">Postęp</span>
+                <div class="progress">
+                  <div id="progressbarSolution" class="progress-bar" role="progressbar" style="width: 0%;"></div>
+                </div>
+                <p class="card-text mt-3 text-muted">
+                  Największa znaleziona suma: <span id="maxAbsSumResult"></span>
+                </p>
+                <p class="card-text mt-3">
+                  Najmniejsza znaleziona suma: <span id="minAbsSumResult" class="text-success"></span>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</body>
+
+<script type="module" src="main.js"></script>
+<script src="../../js/live.js"></script>
+
+</html>
