@@ -1,0 +1,23 @@
+{
+  "name": "piw_lab",
+  "version": "1.0.0",
+  "description": "https://vanill4sky.github.io/piw_lab/",
+  "main": "index.js",
+  "dependencies": {
+    "eslint": "^7.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vanill4Sky/piw_lab.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vanill4Sky/piw_lab/issues"
+  },
+  "homepage": "https://github.com/vanill4Sky/piw_lab#readme"
+}
