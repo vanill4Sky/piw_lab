@@ -78,6 +78,10 @@ class Game extends React.Component {
     });
   }
 
+  chuj
+  asda
+  
+
   jumpTo(step) {
     this.setState({
       stepNumber: step,
