@@ -19,17 +19,17 @@ function TasksList() {
           </Link>
           <Link
             className="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
-            to="/button"
+            to="/light_bulb"
           >
             Przyciski, formularze i zdarzenia
-            <span className="badge badge-primary badge-pill">button</span>
+            <span className="badge badge-primary badge-pill">light_bulb</span>
           </Link>
           <Link
             className="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
-            to="/list"
+            to="/common_passwords"
           >
             Komponent listy
-            <span className="badge badge-primary badge-pill">list</span>
+            <span className="badge badge-primary badge-pill">common_passwords</span>
           </Link>
           <Link
             className="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
