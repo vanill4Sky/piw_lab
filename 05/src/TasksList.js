@@ -33,10 +33,10 @@ function TasksList() {
           </Link>
           <Link
             className="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
-            to="/web_portal"
+            to="/yellow_notes"
           >
             Portal WWW z wykorzystaniem biblioteki React.js
-            <span className="badge badge-primary badge-pill">web_portal</span>
+            <span className="badge badge-primary badge-pill">yellow_notes</span>
           </Link>
         </ol>
     </div>

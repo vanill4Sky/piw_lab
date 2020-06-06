@@ -1,6 +1,6 @@
 import React from "react";
-import "./css/bootstrap.css";
-import logo from "./img/example-logo.png";
+import "../css/bootstrap.css";
+import { Link } from "react-router-dom";
 
 function HomePage(props) {
   return (
@@ -36,14 +36,14 @@ function HomePage(props) {
             </div>
             <div className="row">
               <div className="col mb-3">
-                <button className="btn btn-lg btn-success btn-block">
+                <Link to="/yellow_notes/register" className="btn btn-lg btn-success btn-block">
                   Zarejestruj się
-                </button>
+                </Link>
               </div>
             </div>
           </div>
           <div className="col-sm-6 mb-3">
-            <img className="img-fluid" src={logo} alt="logo"></img>
+            <img className="img-fluid" src="" alt="logo"></img>
           </div>
         </div>
       </div>

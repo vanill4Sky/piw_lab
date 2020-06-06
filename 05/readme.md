@@ -2,10 +2,13 @@
 
 _Tematem tego laboratorium będzie zapoznanie się z biblioteką React.js. Wszelkie materiały wraz z poradnikami znajdują się na stronie oficjalnej dokumentacji._
 
-- [Lab 4 JavaScript i workery](#lab-4-javascript-i-workery)
+- [Lab 5 React.js](#lab-5-reactjs)
+  - [Przygotowanie:](#przygotowanie)
   - [Forma oddania:](#forma-oddania)
-  - [1. Symulacja punktu obsługi](#1-symulacja-punktu-obs%c5%82ugi)
-  - [2. Złożone algorytmy](#2-z%c5%82o%c5%bcone-algorytmy)
+  - [1. Strona powitalna, komponenty i właściwości](#1-strona-powitalna-komponenty-i-właściwości)
+  - [2. Przyciski, formularze i zdarzenia](#2-przyciski-formularze-i-zdarzenia)
+  - [3. Komponent listy](#3-komponent-listy)
+  - [4. Portal WWW z wykorzystaniem biblioteki React.js](#4-portal-www-z-wykorzystaniem-biblioteki-reactjs)
 
 ## Przygotowanie:
 Podczas rozwiązywania poniższych zadań można wykorzystać menadżer pakietów npm (patrz: wersja zalecana), jednak możliwe jest zastosowanie bibliotek ręcznie (patrz: wersja alternatywna).
@@ -72,4 +75,4 @@ Podczas wykonywania ćwiczenia należy wykorzystać:
 - oraz co najmniej jedno wystąpienie każdego z następujących hooków (zobacz dokumentację: [React Docs: Hooki](https://pl.reactjs.org/docs/hooks-intro.html)):
   - useState,
   - useEffect
-  - oraz jeden [samodzielnie utworzony hook](https://pl.reactjs.org/docs/context.html).
+  - oraz jeden [samodzielnie utworzony hook](https://pl.reactjs.org/docs/hooks-custom.html).

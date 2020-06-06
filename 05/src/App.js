@@ -4,6 +4,7 @@ import HomePage from "./HomePage";
 import TasksList from "./TasksList";
 import LightBulb from "./LightBulb";
 import CommonPasswords from "./CommonPasswords";
+import YellowNotes from "./YellowNotes/YellowNotes";
 
 function App() {
   return (
@@ -18,6 +19,9 @@ function App() {
         </Route>
         <Route path="/common_passwords">
           <CommonPasswords />  
+        </Route>
+        <Route path="/yellow_notes">
+          <YellowNotes />  
         </Route>
       </Switch>
     </HashRouter>
