@@ -1,6 +1,7 @@
 import React from "react";
 import "../css/bootstrap.css";
 import { Link } from "react-router-dom";
+import logo from "./img/logo.png";
 
 function HomePage(props) {
   return (
@@ -16,21 +17,7 @@ function HomePage(props) {
             <div className="row">
               <div className="col">
                 <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Nullam risus eros, mollis a sagittis a, pulvinar ac libero.
-                  Pellentesque eu dolor tellus. Mauris ac venenatis felis.
-                </p>
-                <p>
-                  Phasellus aliquet lorem at est pretium, at vehicula nisl
-                  ultricies. Ut semper diam a lorem posuere, consectetur
-                  tincidunt felis imperdiet. Sed erat orci, condimentum id urna
-                  sed, efficitur commodo nisl. Fusce sed egestas lorem. Aenean
-                  at fringilla odio, a dictum nulla.
-                </p>
-                <p>
-                  Sed libero lorem, tincidunt faucibus faucibus laoreet,
-                  accumsan sit amet eros. Sed ex mi, aliquam id odio id, congue
-                  sagittis justo. Sed mattis eget risus sit amet tincidunt.
+                    Strona miała pozwalać na zapisywanie notatek skojarzonych z kontem użytkownika. Wszystkie dane byłyby trzymane w localstorage. Udało się zrealizować tylko część założeń: logowanie, rejestrację i przechowywanie danych aktulanego użytkownika w kontekście. 
                 </p>
               </div>
             </div>
@@ -43,7 +30,7 @@ function HomePage(props) {
             </div>
           </div>
           <div className="col-sm-6 mb-3">
-            <img className="img-fluid" src="" alt="logo"></img>
+            <img className="img-fluid" src={logo} alt="logo"></img>
           </div>
         </div>
       </div>
