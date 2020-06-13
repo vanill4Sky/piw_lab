@@ -1,0 +1,19 @@
+{
+  "name": "06",
+  "version": "1.0.0",
+  "description": "_Tematem tego laboratorium będzie zapoznanie się z biblioteką React.js. Wszelkie materiały wraz z poradnikami znajdują się na stronie oficjalnej dokumentacji._",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^7.2.0"
+  },
+  "dependencies": {
+    "axios": "^0.19.2",
+    "moment": "^2.26.0",
+    "one-liner-joke": "^1.2.0"
+  }
+}
