@@ -1,0 +1,109 @@
+{
+    "quizName": "Example test",
+    "authorName": "Foo Bar",
+    "singleQuestionRepeat": 1,
+    "questions": [
+	   {
+        "questionType": "TrueFalse",
+        "contentType": "Text",
+        "content": "True/False question",
+		"comment": "False, True, False, True",
+        "answers": [
+          {
+            "contentType": "Text",
+            "content": "A",
+            "isCorrect": false
+          },
+          {
+            "contentType": "Text",
+            "content": "B",
+            "isCorrect": true
+          },
+          {
+            "contentType": "Text",
+            "content": "C",
+            "isCorrect": false
+          },
+          {
+            "contentType": "Text",
+            "content": "D",
+            "isCorrect": true
+          }
+        ]
+      },
+	  {
+        "questionType": "SingleAnswere",
+        "contentType": "Text",
+        "content": "Single correct answer question",
+		"comment": "B",
+        "answers": [
+          {
+            "contentType": "Text",
+            "content": "A",
+            "isCorrect": false
+          },
+          {
+            "contentType": "Text",
+            "content": "B",
+            "isCorrect": true
+          },
+          {
+            "contentType": "Text",
+            "content": "C",
+            "isCorrect": false
+          },
+          {
+            "contentType": "Text",
+            "content": "D",
+            "isCorrect": false
+          }
+        ]
+      },
+      {
+        "questionType": "MultipleAnswere",
+        "contentType": "Text",
+        "content": "Multiple correct answers question",
+		"comment": "A, B, D",
+        "answers": [
+          {
+            "contentType": "Text",
+            "content": "A",
+            "isCorrect": true
+          },
+          {
+            "contentType": "Text",
+            "content": "B",
+            "isCorrect": true
+          },
+          {
+            "contentType": "Text",
+            "content": "C",
+            "isCorrect": false
+          },
+          {
+            "contentType": "Text",
+            "content": "D",
+            "isCorrect": true
+          }
+        ]
+      },
+      {
+        "questionType": "TrueFalse",
+        "contentType": "Text",
+        "content": "True/False question",
+		"comment": "False, True",
+        "answers": [
+          {
+            "contentType": "Text",
+            "content": "A",
+            "isCorrect": false
+          },
+          {
+            "contentType": "Text",
+            "content": "B",
+            "isCorrect": true
+          }
+        ]
+      }
+    ]
+}
