@@ -1,0 +1,17 @@
+{
+  "name": "cw1_3",
+  "version": "1.0.0",
+  "description": "",
+  "main": "axiosTest.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^7.2.0"
+  },
+  "dependencies": {
+    "axios": "^0.19.2"
+  }
+}

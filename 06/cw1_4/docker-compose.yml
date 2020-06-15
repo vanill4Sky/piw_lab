@@ -1,0 +1,8 @@
+version: '3'
+services:
+    web:
+        image: 241296-cw1_4
+        build: .
+        ports: 
+            - "8088:8088"
+        

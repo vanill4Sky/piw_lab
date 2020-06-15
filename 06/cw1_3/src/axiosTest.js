@@ -10,6 +10,7 @@ function printResponse(response) {
 		return previous + "\n\t" + current
 	})
 	console.log(`Tekst:	${text_lines}`)
+	process.exit(1)
 }
 
 axios.get("https://jsonplaceholder.typicode.com/posts/1")
@@ -21,5 +22,4 @@ axios.get("https://jsonplaceholder.typicode.com/posts/1")
 		console.log(error)
 	})
 	.finally(function () {
-		// always executed
 	})
